@@ -50,8 +50,8 @@ const useMouth = (frame: number, fps: number): Mouth => {
   if (!audio) return 'closed';
   const bins = visualizeAudio({fps, frame, audioData: audio, numberOfSamples: 32, smoothing: true});
   const voice = (bins[1] + bins[2] + bins[3] + bins[4] + bins[5]) / 5;
-  if (voice > 0.16) return 'open_wide';
-  if (voice > 0.06) return 'open_mid';
+  if (voice > 0.12) return 'open_wide';
+  if (voice > 0.04) return 'open_mid';
   return 'closed';
 };
 

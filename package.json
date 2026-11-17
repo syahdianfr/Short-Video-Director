@@ -1,0 +1,30 @@
+{
+  "name": "short-video-director",
+  "version": "1.0.0",
+  "private": true,
+  "description": "350 Years of Rule, Lost in a Week — Remotion + React Three Fiber vertical explainer",
+  "scripts": {
+    "studio": "remotion studio",
+    "still": "remotion still src/index.ts SetupCheck out/setup-check.png --frame=45",
+    "render": "remotion render src/index.ts Main out/main.mp4",
+    "typecheck": "tsc --noEmit",
+    "still:cloud": "remotion still src/index.ts SetupCheck out/setup-check.png --frame=45 --browser-executable=/opt/pw-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell --gl=swangle",
+    "render:cloud": "remotion render src/index.ts SetupCheck out/setup-check.mp4 --browser-executable=/opt/pw-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell --gl=swangle"
+  },
+  "dependencies": {
+    "@react-three/drei": "10.7.9",
+    "@react-three/fiber": "9.8.2",
+    "@remotion/cli": "4.0.544",
+    "@remotion/media-utils": "4.0.544",
+    "@remotion/three": "4.0.544",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "remotion": "4.0.544",
+    "three": "0.180.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.2",
+    "@types/three": "0.180.0",
+    "typescript": "5.9.3"
+  }
+}

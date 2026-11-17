@@ -4,6 +4,8 @@ import {interpolate, Easing} from 'remotion';
 import {ToonPart, FlatPart, canvasTexture, FONT_BLACK, FONT_TYPE, INK, rand} from '../lib/toon';
 import {WavingFlag, HandProp} from '../props';
 import {Hero, WorldProp, secToLocal, type SetProps} from './common';
+import {TexGround, useTiled, KModel, Foliage} from '../lib/assets';
+
 import type {Vec3} from '../types';
 
 /* ------------------------------------------------------------------ */
@@ -88,14 +90,13 @@ export const OfficeSet: React.FC<SetProps> = (p) => {
   return (
     <group>
       {/* floor + walls */}
-      <ToonPart color="#8a5a35" rotation={[-Math.PI / 2, 0, 0]} outline={false}>
-        <planeGeometry args={[14, 14]} />
-      </ToonPart>
-      {[-3, -1.5, 0, 1.5, 3].map((x) => (
-        <FlatPart key={x} color="#6e4526" position={[x, 0.002, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-          <planeGeometry args={[0.03, 14]} />
-        </FlatPart>
-      ))}
+      <TexGround tex="planks" color="#d8a070" width={14} depth={14} repeat={6} position={[0, 0, 0]} />
+      <KModel id="rug" position={[0, 0.01, 0.3]} scale={2.4} />
+      <KModel id="bookcaseClosed" position={[-3.4, 0, -2.25]} scale={3.2} />
+      <KModel id="bookcaseOpen" position={[-2.4, 0, -2.25]} scale={3.2} />
+      <KModel id="coatRack" position={[3.5, 0, -1.8]} scale={2.8} />
+      <KModel id="pottedPlant" position={[2.6, 0, -2.0]} height={1.5} />
+      <KModel id="lampFloor" position={[-1.7, 0, -1.6]} scale={2.8} />
       <ToonPart color="#efe2c0" position={[0, 2.5, -2.6]} outline={false}>
         <boxGeometry args={[14, 5, 0.2]} />
       </ToonPart>
@@ -356,6 +357,8 @@ export const GlobeSet: React.FC<SetProps> = (p) => {
       <ToonPart color="#5a3a22" position={[0, 0.4, 0]}>
         <boxGeometry args={[2.6, 0.8, 1.4]} />
       </ToonPart>
+      <KModel id="books" position={[-0.85, 0.8, 0.15]} scale={2.4} rotation={[0, 0.3, 0]} />
+      <KModel id="radio" position={[0.9, 0.8, -0.1]} scale={2.2} rotation={[0, -0.4, 0]} />
       <ToonPart color="#c49a3a" position={[0, 0.85, 0]}>
         <cylinderGeometry args={[0.22, 0.3, 0.1, 20]} />
       </ToonPart>
@@ -459,9 +462,11 @@ export const StudioSet: React.FC<SetProps> = (p) => {
       <FlatPart color="#d9b98a" position={[0, 3, -3]}>
         <planeGeometry args={[20, 12]} />
       </FlatPart>
-      <ToonPart color="#b58b5a" rotation={[-Math.PI / 2, 0, 0]} outline={false}>
-        <planeGeometry args={[20, 20]} />
-      </ToonPart>
+      <TexGround tex="planks" color="#e0b080" width={20} depth={20} repeat={8} position={[0, 0, 0]} />
+      <KModel id="bookcaseOpen" position={[-2.7, 0, -2.4]} scale={3.2} />
+      <KModel id="pottedPlant" position={[2.4, 0, -2.2]} height={1.5} />
+      <KModel id="sideTable" position={[-2.4, 0, 0.6]} scale={2.4} rotation={[0, 0.5, 0]} />
+      <KModel id="radio" position={[-2.45, 0.92, 0.6]} scale={2.0} rotation={[0, 0.5, 0]} />
       {/* screen */}
       <group position={[0.35, 2.0, -1.9]}>
         <ToonPart color="#333" position={[0, 0, -0.03]}>

@@ -4,7 +4,8 @@ import {ThreeCanvas} from '@remotion/three';
 import {useAudioData, visualizeAudio} from '@remotion/media-utils';
 import {beatAt} from './storyBeats';
 import {CameraController, WHIP_FRAMES} from './CameraController';
-import {Lighting} from './Lighting';
+import {Lighting, ColorBackground} from './Lighting';
+import {Sky, type SkyId} from './lib/assets';
 import {ScreenText} from './ScreenText';
 import {SubtitleOverlay} from './SubtitleOverlay';
 import type {Mouth} from './lib/faces';
@@ -39,6 +40,23 @@ const SETS: Record<SetId, React.FC<SetProps>> = {
   archipelago: ArchipelagoSet,
   egg: EggSet,
   finale: FinaleSet,
+};
+
+/** HDRI sky per exterior set (Poly Haven, see public/assets/CREDITS.md). Interiors use a flat mood colour. */
+const SET_SKY: Partial<Record<SetId, {sky: SkyId; rot?: number}>> = {
+  treasure: {sky: 'golden', rot: 0.3},
+  crowd: {sky: 'day', rot: 0.6},
+  veranda: {sky: 'day', rot: 2.2},
+  sea: {sky: 'night', rot: 1.2},
+  beach: {sky: 'night', rot: 2.0},
+  bike_parade: {sky: 'day', rot: 1.0},
+  bridge: {sky: 'crisis', rot: 0.8},
+  river: {sky: 'crisis', rot: 2.4},
+  beach_chair: {sky: 'crisis', rot: 1.6},
+  bandung: {sky: 'crisis', rot: 0.2},
+  bomber_window: {sky: 'crisis', rot: 0},
+  flagpoles: {sky: 'day', rot: 0.4},
+  finale: {sky: 'dawn', rot: 3.6},
 };
 
 const VO = staticFile('vo.mp3');
@@ -80,6 +98,11 @@ export const Main: React.FC<MainProps> = ({showSubtitles = false, withSfx = true
       <AbsoluteFill style={{filter: whipBlur ? `blur(${whipBlur}px)` : undefined}}>
         <ThreeCanvas width={width} height={height} camera={{fov: 35, near: 0.05, far: 400, position: [0, 1.6, 5]}} gl={{antialias: true}}>
           <Lighting mood={beat.lightingMood} />
+          {SET_SKY[beat.set] ? (
+            <Sky sky={SET_SKY[beat.set]!.sky} rotation={SET_SKY[beat.set]!.rot ?? 0} />
+          ) : (
+            <ColorBackground mood={beat.lightingMood} />
+          )}
           <CameraController beat={beat} frame={frame} fps={fps} />
           <SetComp key={beat.set} {...setProps} />
         </ThreeCanvas>

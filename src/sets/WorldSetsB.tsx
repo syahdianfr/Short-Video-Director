@@ -4,6 +4,8 @@ import {interpolate, Easing} from 'remotion';
 import {ToonPart, FlatPart, canvasTexture, INK, rand, getToonGradient} from '../lib/toon';
 import {WavingFlag, HandProp, Bicycle, paperTexture} from '../props';
 import {ToonCharacter} from '../ToonCharacter';
+import {TexGround, useTiled, KModel, Foliage} from '../lib/assets';
+
 import {Hero, Ground, Palm, Fireball, DustPuff, secToLocal, heroProps, WorldProp, type SetProps} from './common';
 import {EggMesh, eggProfile, eggFoil} from './OfficeSets';
 import type {Vec3} from '../types';
@@ -11,13 +13,12 @@ import type {Vec3} from '../types';
 /* ------------------------------------------------------------------ */
 /* Shared river terrain                                                 */
 /* ------------------------------------------------------------------ */
-const RiverTerrain: React.FC<{t: number}> = ({t}) => (
+const RiverTerrain: React.FC<{t: number}> = ({t}) => {
+  const grass = useTiled('grass', 30, 4);
+  return (
   <group>
-    <FlatPart color="#ffb27a" position={[0, 8, -40]}>
-      <planeGeometry args={[160, 40]} />
-    </FlatPart>
     {[-1, 1].map((s) => (
-      <ToonPart key={s} color="#6f9a45" position={[0, -0.3, s * 6.6]}>
+      <ToonPart key={s} color="#c9e09a" map={grass} position={[0, -0.3, s * 6.6]}>
         <boxGeometry args={[80, 0.6, 10]} />
       </ToonPart>
     ))}
@@ -33,13 +34,20 @@ const RiverTerrain: React.FC<{t: number}> = ({t}) => (
     {Array.from({length: 8}).map((_, i) => (
       <Palm key={i} position={[(i - 4) * 4.5, 0, -6 - rand(i) * 4]} scale={1.2} seed={i} t={t} />
     ))}
+    {[-6, -3.2, 2.5, 5.5].map((x, i) => (
+      <KModel key={`r${i}`} id={i % 2 ? 'rockA' : 'rockB'} position={[x, -0.05, i % 2 ? 1.75 : -1.75]} scale={1.6} />
+    ))}
+    <Foliage n={24} seed={13} area={[-14, 14, -11, -2.1]} />
+    <Foliage n={10} seed={14} area={[-14, 14, 2.1, 5]} clear={[-1, 4, 2, 5]} />
   </group>
-);
+  );
+};
 
 /* ------------------------------------------------------------------ */
 /* BRIDGE — the sapper blows it                                         */
 /* ------------------------------------------------------------------ */
 export const BridgeSet: React.FC<SetProps> = (p) => {
+  const brick = useTiled('brick', 1, 1);
   const sec = p.frame / p.fps;
   const boom = 30.1;
   const k = Math.max(0, sec - boom);
@@ -54,7 +62,7 @@ export const BridgeSet: React.FC<SetProps> = (p) => {
       <RiverTerrain t={sec} />
       {/* bridge pillars */}
       {[-1.1, 1.1].map((z) => (
-        <ToonPart key={z} color="#8a8a8a" position={[0, -0.1, z]}>
+        <ToonPart key={z} color="#c8b8a0" map={brick} position={[0, -0.1, z]}>
           <boxGeometry args={[0.6, 0.6, 0.4]} />
         </ToonPart>
       ))}
@@ -158,10 +166,11 @@ export const BeachChairSet: React.FC<SetProps> = (p) => {
   const actLocal = secToLocal(p, act);
   return (
     <group>
-      <FlatPart color="#ff9a5a" position={[0, 6, -30]}>
-        <planeGeometry args={[120, 30]} />
-      </FlatPart>
-      <Ground color="#e3c58e" />
+      <TexGround tex="sand" color="#f5d6a8" repeat={70} />
+      <KModel id="crate" position={[2.0, 0, -1.4]} height={0.7} rotation={[0, 0.4, 0]} />
+      <KModel id="crate" position={[2.05, 0.7, -1.4]} height={0.6} rotation={[0, -0.3, 0]} />
+      <KModel id="barrel" position={[-2.3, 0, -1.5]} height={1.0} />
+      <KModel id="barrel" position={[2.9, 0, -1.0]} height={0.95} rotation={[0, 0, 1.45]} />
       {/* smoke columns */}
       {[-4, 3.5, 7].map((x, i) => (
         <group key={i} position={[x, 0, -9 - i * 2]}>
@@ -225,10 +234,12 @@ export const BandungSet: React.FC<SetProps> = (p) => {
   const R = interpolate(sec, [34.82, 36.39], [8.5, 4.2], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.inOut(Easing.cubic)});
   return (
     <group>
-      <FlatPart color="#ff8a3d" position={[0, 10, -40]}>
-        <planeGeometry args={[160, 50]} />
-      </FlatPart>
-      <Ground color="#5e8a3a" />
+      <TexGround tex="grass" color="#b8d890" repeat={60} />
+      {Array.from({length: 26}).map((_, i) => {
+        const a = (i / 26) * Math.PI * 2 + rand(i) * 0.2;
+        const r = 3.6 + rand(i + 50) * 4.5;
+        return <KModel key={`t${i}`} id={i % 3 === 0 ? 'treeOak' : i % 3 === 1 ? 'tree' : 'treeFat'} position={[Math.sin(a) * r, 0, Math.cos(a) * r]} height={1.4 + rand(i) * 0.9} ink={0.03} />;
+      })}
       {Array.from({length: 18}).map((_, i) => {
         const a = (i / 18) * Math.PI * 2;
         const r = 12 + rand(i) * 3;
@@ -304,9 +315,12 @@ export const HangarSet: React.FC<SetProps> = (p) => {
           <torusGeometry args={[5.95, 0.06, 6, 32, Math.PI]} />
         </ToonPart>
       ))}
-      <ToonPart color="#b9b4a8" rotation={[-Math.PI / 2, 0, 0]} outline={false}>
-        <planeGeometry args={[14, 20]} />
-      </ToonPart>
+      <TexGround tex="gravel" color="#e2ddd2" width={14} depth={20} repeat={8} position={[0, 0, 0]} />
+      <KModel id="crate" position={[2.4, 0, -2.4]} height={0.8} rotation={[0, 0.3, 0]} />
+      <KModel id="crate" position={[2.45, 0.8, -2.4]} height={0.7} rotation={[0, -0.4, 0]} />
+      <KModel id="crate" position={[3.2, 0, -1.9]} height={0.75} rotation={[0, 0.9, 0]} />
+      <KModel id="barrel" position={[-3.0, 0, -2.6]} height={1.1} />
+      <KModel id="barrel" position={[-3.6, 0, -2.0]} height={1.05} rotation={[0, 1, 0]} />
       <FlatPart color="#cfe8f5" position={[0, 3, -8.9]}>
         <planeGeometry args={[12, 6]} />
       </FlatPart>
@@ -393,18 +407,13 @@ export const HangarSet: React.FC<SetProps> = (p) => {
 /* BOMBER WINDOW — over-the-shoulder through the hangar window          */
 /* ------------------------------------------------------------------ */
 export const BomberWindowSet: React.FC<SetProps> = (p) => {
+  const brick = useTiled('brick', 3, 2);
   const sec = p.frame / p.fps;
   const jp = heroProps(p);
   const hole = {w: 3.0, h: 3.2, y: 2.6};
   return (
     <group>
       {/* sky + horizon fire */}
-      <FlatPart color="#c2331f" position={[0, 8, -60]}>
-        <planeGeometry args={[200, 40]} />
-      </FlatPart>
-      <FlatPart color="#ff8a2a" position={[0, 1.5, -59]}>
-        <planeGeometry args={[200, 5]} />
-      </FlatPart>
       {Array.from({length: 9}).map((_, i) => (
         <ToonPart key={i} color="#3a1410" position={[(i - 4) * 9, 0, -40]} outline={false}>
           <coneGeometry args={[6, 7 + rand(i) * 4, 6]} />
@@ -431,7 +440,7 @@ export const BomberWindowSet: React.FC<SetProps> = (p) => {
         [-(hole.w / 2 + 3), hole.y, 6, hole.h],
         [hole.w / 2 + 3, hole.y, 6, hole.h],
       ].map(([x, y, w, h], i) => (
-        <ToonPart key={i} color="#4d4f52" position={[x, y, 0]} outline={false}>
+        <ToonPart key={i} color="#8d7a6a" map={brick} position={[x, y, 0]} outline={false}>
           <boxGeometry args={[w, h, 0.2]} />
         </ToonPart>
       ))}
@@ -458,10 +467,10 @@ export const FlagpolesSet: React.FC<SetProps> = (p) => {
   const facingFlags = p.beat.id === 'S27_flag_swap';
   return (
     <group>
-      <FlatPart color="#9fd8f5" position={[0, 8, -30]}>
-        <planeGeometry args={[120, 40]} />
-      </FlatPart>
-      <Ground color="#79b851" />
+      <TexGround tex="grass" color="#d6f0a8" repeat={60} />
+      <Foliage n={18} seed={21} area={[-7, 7, -7, -0.8]} />
+      <KModel id="bushDetailed" position={[-1.3, 0, 0.3]} scale={2.6} />
+      <KModel id="bushDetailed" position={[1.4, 0, 0.2]} scale={2.4} />
       {Array.from({length: 8}).map((_, i) => (
         <Palm key={i} position={[(i - 3.5) * 4, 0, -8 - rand(i) * 4]} scale={1.2} seed={i} t={sec} />
       ))}
@@ -510,9 +519,9 @@ const Table: React.FC = () => (
     <FlatPart color="#e7c79a" position={[0, 2, -3]}>
       <planeGeometry args={[14, 8]} />
     </FlatPart>
-    <ToonPart color="#8a5a35" rotation={[-Math.PI / 2, 0, 0]} outline={false}>
-      <planeGeometry args={[14, 14]} />
-    </ToonPart>
+    <TexGround tex="planks" color="#d9a878" width={14} depth={14} repeat={7} position={[0, 0, 0]} />
+    <KModel id="books" position={[-1.05, 0, -0.9]} scale={2.6} rotation={[0, 0.4, 0]} />
+    <KModel id="lampTable" position={[1.25, 0, -1.2]} scale={2.6} rotation={[0, -0.5, 0]} />
   </group>
 );
 
@@ -669,9 +678,6 @@ export const FinaleSet: React.FC<SetProps> = (p) => {
   const z = isWalk ? interpolate(sec, [57.9, 59.36], [-0.8, 0.9], {extrapolateRight: 'clamp'}) : 1.0;
   return (
     <group>
-      <FlatPart color="#ffd27a" position={[0, 8, -30]}>
-        <planeGeometry args={[120, 40]} />
-      </FlatPart>
       <FlatPart color="#fff3c4" position={[0, 6, -29]}>
         <circleGeometry args={[4, 48]} />
       </FlatPart>
@@ -681,7 +687,8 @@ export const FinaleSet: React.FC<SetProps> = (p) => {
           <planeGeometry args={[0.8, 40]} />
         </FlatPart>
       ))}
-      <Ground color="#d9b24a" />
+      <TexGround tex="grass" color="#f2d890" repeat={60} />
+      <Foliage n={30} seed={33} area={[-7, 7, -4, 3]} clear={[-1.2, 1.2, -1.5, 3]} kinds={['grass', 'flower', 'grassLeafs', 'bush', 'flower']} />
       {/* giant broken shell halves */}
       <group position={[-1.9, 0, -1.2]} rotation={[0, 0.4, 0.5]} scale={3.2}>
         <EggMesh phiStart={Math.PI} phiLength={Math.PI} inside />

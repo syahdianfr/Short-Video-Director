@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {useLayoutEffect} from 'react';
+import * as THREE from 'three';
+import {useThree} from '@react-three/fiber';
 import type {LightingMood} from './types';
 
 /** Emotional colour coding: each mood is a full light rig + sky + fog. */
@@ -17,11 +19,19 @@ export const Lighting: React.FC<{mood: LightingMood}> = ({mood}) => {
   const m = MOODS[mood];
   return (
     <>
-      <color attach="background" args={[m.bg]} />
       {m.fog ? <fog attach="fog" args={m.fog} /> : null}
       <ambientLight color={m.ambient} intensity={m.ambientI} />
       <directionalLight color={m.key} intensity={m.keyI} position={m.keyPos} />
       <directionalLight color={m.rim} intensity={m.rimI} position={[-m.keyPos[0], 3, -6]} />
     </>
   );
+};
+
+/** Flat colour background for interior sets (exterior sets use <Sky/>). */
+export const ColorBackground: React.FC<{mood: LightingMood}> = ({mood}) => {
+  const scene = useThree((s) => s.scene);
+  useLayoutEffect(() => {
+    scene.background = new THREE.Color(MOODS[mood].bg);
+  });
+  return null;
 };

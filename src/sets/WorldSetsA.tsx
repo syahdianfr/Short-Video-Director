@@ -4,6 +4,8 @@ import {interpolate, Easing} from 'remotion';
 import {ToonPart, FlatPart, canvasTexture, FONT_BLACK, FONT_TYPE, INK, rand, getToonGradient, Ink} from '../lib/toon';
 import {WavingFlag, Bicycle, HandProp} from '../props';
 import {ToonCharacter} from '../ToonCharacter';
+import {TexGround, useTiled, KModel, Foliage} from '../lib/assets';
+
 import {Hero, Ground, Palm, Tree, Fireball, secToLocal, heroProps, type SetProps} from './common';
 import type {Vec3} from '../types';
 
@@ -19,10 +21,12 @@ export const TreasureSet: React.FC<SetProps> = (p) => {
   ];
   return (
     <group>
-      <FlatPart color="#f3d9a0" position={[0, 2, -3]}>
-        <planeGeometry args={[14, 10]} />
-      </FlatPart>
-      <Ground color="#c9a46a" />
+      <TexGround tex="planks" color="#f0d2a0" repeat={24} size={30} />
+      <KModel id="barrel" position={[-1.15, 0, -0.35]} height={1.05} />
+      <KModel id="barrel" position={[-1.7, 0, 0.2]} height={0.95} rotation={[0, 1, 0]} />
+      <KModel id="crate" position={[1.1, 0, -0.3]} height={0.62} rotation={[0, 0.3, 0]} />
+      <KModel id="crate" position={[1.15, 0.62, -0.3]} height={0.55} rotation={[0, -0.2, 0]} />
+      <KModel id="crate" position={[1.75, 0, 0.15]} height={0.6} rotation={[0, 0.8, 0]} />
       {/* chest */}
       <ToonPart color="#7a4a22" position={[0, 0.3, 0]}>
         <boxGeometry args={[1.3, 0.6, 0.8]} />
@@ -132,7 +136,8 @@ export const CrowdSet: React.FC<SetProps> = (p) => {
   const t = p.frame / p.fps;
   return (
     <group>
-      <Ground color="#79b851" />
+      <TexGround tex="grass" color="#d6f0a8" repeat={60} />
+      <Foliage n={26} seed={3} area={[-14, 14, -22, -12]} />
       {/* the hill + tiny flag */}
       <ToonPart color="#6aa648" position={[0, -0.4, -14]} scale={[3.4, 1.6, 2.6]}>
         <sphereGeometry args={[1, 24, 16]} />
@@ -222,10 +227,11 @@ export const VerandaSet: React.FC<SetProps> = (p) => {
         <planeGeometry args={[12, 10]} />
       </ToonPart>
       {/* garden beyond */}
-      <Ground color="#6fb24c" y={-0.02} />
-      <FlatPart color="#9fd8f5" position={[0, 6, -18]}>
-        <planeGeometry args={[60, 20]} />
-      </FlatPart>
+      <TexGround tex="grass" color="#cfe8a0" repeat={60} y={-0.02} />
+      <Foliage n={22} seed={5} area={[-8, 8, -9.5, -3.8]} />
+      <KModel id="pottedPlant" position={[-3.1, 0, -2.6]} height={1.4} />
+      <KModel id="pottedPlant" position={[3.1, 0, -2.6]} height={1.4} rotation={[0, 1.2, 0]} />
+      <KModel id="loungeChair" position={[-2.7, 0, 0.6]} height={1.15} rotation={[0, 0.9, 0]} />
       {Array.from({length: 7}).map((_, i) => (
         <Palm key={i} position={[(i - 3) * 2.6, 0, -6.5 - rand(i) * 3]} scale={1.1} seed={i} t={t} />
       ))}
@@ -399,9 +405,6 @@ export const SeaSet: React.FC<SetProps> = (p) => {
   };
   return (
     <group>
-      <FlatPart color="#0d1b3d" position={[0, 20, -80]}>
-        <planeGeometry args={[300, 80]} />
-      </FlatPart>
       {/* moon + stars */}
       <FlatPart color="#f4f1d0" position={[-14, 16, -70]}>
         <circleGeometry args={[2.4, 32]} />
@@ -568,18 +571,13 @@ export const BeachSet: React.FC<SetProps> = (p) => {
   const hero = heroProps(p);
   return (
     <group>
-      <FlatPart color="#3a4f7a" position={[0, 10, -60]}>
-        <planeGeometry args={[200, 40]} />
-      </FlatPart>
-      <FlatPart color="#f2b880" position={[0, 2, -59]}>
-        <planeGeometry args={[200, 4]} />
-      </FlatPart>
       <ToonPart color="#2c5a8f" rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.05, -30]} outline={false}>
         <planeGeometry args={[200, 60]} />
       </ToonPart>
-      <ToonPart color="#e3c58e" rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 10]} outline={false}>
-        <planeGeometry args={[200, 22]} />
-      </ToonPart>
+      <TexGround tex="sand" color="#f2dcae" width={200} depth={22} repeat={90} position={[0, 0, 10]} />
+      <KModel id="rockA" position={[-3.2, 0, 2.2]} scale={2.2} tint="#9fb0d8" />
+      <KModel id="rockB" position={[4.1, 0, 0.8]} scale={2.0} tint="#9fb0d8" />
+      <Foliage n={8} seed={9} area={[-8, 8, 3, 8]} clear={[-2.5, 6, 2.5, 8]} tint="#9fb0d8" />
       {Array.from({length: 6}).map((_, i) => (
         <FlatPart key={i} color="#e9f4ff" position={[(i - 2.5) * 3 + Math.sin(sec * 2 + i) * 0.4, 0.01, -0.9 + Math.sin(sec * 1.5 + i) * 0.2]} rotation={[-Math.PI / 2, 0, 0]}>
           <planeGeometry args={[2.2, 0.12]} />
@@ -615,13 +613,9 @@ export const BikeParadeSet: React.FC<SetProps> = (p) => {
   ];
   return (
     <group>
-      <FlatPart color="#9fd8f5" position={[0, 6, -30]}>
-        <planeGeometry args={[120, 30]} />
-      </FlatPart>
-      <Ground color="#79b851" />
-      <ToonPart color="#c9a46a" rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.005, -1.6]} outline={false}>
-        <planeGeometry args={[80, 6]} />
-      </ToonPart>
+      <TexGround tex="grass" color="#d6f0a8" repeat={60} />
+      <TexGround tex="gravel" color="#e8c99a" width={80} depth={6} repeat={60} position={[0, 0.005, -1.6]} />
+      <Foliage n={30} seed={11} area={[-12, 14, -9, -5]} />
       {Array.from({length: 9}).map((_, i) => (
         <Palm key={i} position={[(i - 4) * 4 + 1, 0, -7 - rand(i) * 3]} scale={1.1} seed={i} t={t} />
       ))}

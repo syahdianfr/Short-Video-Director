@@ -2,6 +2,7 @@ import React from 'react';
 import * as THREE from 'three';
 import {ToonPart} from '../lib/toon';
 import {HandProp} from '../props';
+import {KPalm, KModel} from '../lib/assets';
 import type {Mouth, EmoteType} from '../lib/faces';
 import type {Expression, StoryBeat, Vec3} from '../types';
 import {ToonCharacter, type ToonCharacterProps} from '../ToonCharacter';
@@ -83,37 +84,14 @@ export const Ground: React.FC<{color: string; size?: number; y?: number}> = ({co
   </ToonPart>
 );
 
-/** Cheap stylised tree (cone stack + trunk). */
-export const Tree: React.FC<{position: Vec3; scale?: number; color?: string}> = ({position, scale = 1, color = '#3f8f3a'}) => (
-  <group position={position} scale={scale}>
-    <ToonPart color="#6b4a2a" position={[0, 0.6, 0]}>
-      <cylinderGeometry args={[0.12, 0.16, 1.2, 8]} />
-    </ToonPart>
-    <ToonPart color={color} position={[0, 1.7, 0]}>
-      <coneGeometry args={[0.8, 1.6, 9]} />
-    </ToonPart>
-    <ToonPart color={color} position={[0, 2.4, 0]}>
-      <coneGeometry args={[0.6, 1.2, 9]} />
-    </ToonPart>
-  </group>
+/** Stylised tree — Kenney Nature Kit model. */
+export const Tree: React.FC<{position: Vec3; scale?: number; color?: string}> = ({position, scale = 1}) => (
+  <KModel id={Math.abs(position[0] * 3 + position[2]) % 2 > 1 ? 'treeOak' : 'tree'} position={position} height={3.6 * scale} ink={0.04} />
 );
 
-/** Palm tree for Java/Batavia backgrounds. */
+/** Palm tree for Java/Batavia backgrounds — Kenney Nature Kit model with wind sway. */
 export const Palm: React.FC<{position: Vec3; scale?: number; seed?: number; t?: number}> = ({position, scale = 1, seed = 0, t = 0}) => (
-  <group position={position} scale={scale} rotation={[0, seed, 0.08 * Math.sin(seed)]}>
-    {[0, 1, 2, 3, 4].map((i) => (
-      <ToonPart key={i} color="#8a6a43" position={[i * 0.04, 0.45 + i * 0.85, 0]} outline={0.02}>
-        <cylinderGeometry args={[0.12 - i * 0.012, 0.14 - i * 0.012, 0.9, 8]} />
-      </ToonPart>
-    ))}
-    {[0, 1, 2, 3, 4, 5].map((i) => (
-      <group key={`l${i}`} position={[0.18, 4.3, 0]} rotation={[0, (i / 6) * Math.PI * 2, -0.5 + 0.06 * Math.sin(t * 2 + i + seed)]}>
-        <ToonPart color="#3f9a44" position={[0.75, 0, 0]} scale={[1, 0.12, 0.35]} outline={0.02}>
-          <sphereGeometry args={[0.8, 12, 8]} />
-        </ToonPart>
-      </group>
-    ))}
-  </group>
+  <KPalm position={position} scale={scale} seed={seed} t={t} />
 );
 
 /** Fireball / explosion puff (grows then fades by scale). */

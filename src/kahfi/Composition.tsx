@@ -12,13 +12,10 @@ import type {KahfiSetProps} from './sets/common';
 import {useTexturesReady} from './textures';
 import {KotaPasarSet, KuilTanggaSet} from './sets/Kota';
 import {InteriorGuaSet, LanskapBukitSet, LerengBukitSet, MulutGuaSet} from './sets/Gua';
-import {StagingSet, StudioSet} from './sets/Studio';
+import {StudioSet} from './sets/Studio';
+import {GangBatuSet, GerbangKotaSet, RumahPintuSet} from './sets/KotaMalam';
 
-/**
- * Set registry. Seven locations are built; gang_batu, rumah_pintu and
- * gerbang_kota currently render through StagingSet, which is a real lit set
- * rather than an empty scene, so blocking and framing can still be judged.
- */
+/** Set registry. All ten locations are built. */
 const SETS: Record<KahfiSetId, React.FC<KahfiSetProps>> = {
   kota_pasar: KotaPasarSet,
   kuil_tangga: KuilTanggaSet,
@@ -27,9 +24,9 @@ const SETS: Record<KahfiSetId, React.FC<KahfiSetProps>> = {
   interior_gua: InteriorGuaSet,
   lanskap_bukit: LanskapBukitSet,
   studio: StudioSet,
-  gang_batu: StagingSet,
-  rumah_pintu: StagingSet,
-  gerbang_kota: StagingSet,
+  gang_batu: GangBatuSet,
+  rumah_pintu: RumahPintuSet,
+  gerbang_kota: GerbangKotaSet,
 };
 
 /**

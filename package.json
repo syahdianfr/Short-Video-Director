@@ -11,7 +11,9 @@
     "render:subs": "remotion render src/index.ts Main out/main_subs.mp4 --crf=18 --props={\\\"showSubtitles\\\":true}",
     "stills:cloud": "node tools/stills.mjs",
     "setup-check:cloud": "remotion render src/index.ts SetupCheck out/setup-check.mp4 --browser-executable=/opt/pw-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell --gl=swangle",
-    "sfx": "python3 tools/sfx.py"
+    "sfx": "python3 tools/sfx.py",
+    "render:kahfi": "remotion render src/index.ts AshabulKahfi1 out/ashabul-kahfi-1.mp4 --crf=18 --concurrency=3 --browser-executable=/opt/pw-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell --gl=swangle",
+    "stills:kahfi": "REMOTION_COMP=AshabulKahfi1 node tools/stills.mjs"
   },
   "dependencies": {
     "@react-three/drei": "10.7.9",

@@ -195,15 +195,25 @@ const SEEDS: BeatSeed[] = [
     mood: 'biru_malam',
     /* Tracking the guard down a narrow alley, with a light deterministic shake. */
     camera: {
-      pos: [0.45, 1.65, 6.6],
-      target: [0, 1.5, 0.6],
-      posEnd: [0.45, 1.65, 1.8],
+      /* The camera follows him down the alley instead of closing on him.
+         Dollying in on a figure who is already walking away just fills the
+         frame with his back and loses the corridor, which is the shot. */
+      /**
+       * A corridor shot has to show the corridor. The walls sit at x = +-2,
+       * so the frame needs about 4 m of visible width where the guard is;
+       * on a 9:16 frame that means a wide lens and real distance, not a
+       * normal lens close in, which only ever frames his back.
+       */
+      pos: [0.3, 1.75, 6.6],
+      target: [0, 1.3, -3.4],
+      posEnd: [0.3, 1.75, 3.0],
+      targetEnd: [0, 1.3, -6.6],
       zoomEnd: 1,
       transition: 'cut',
-      fov: 40,
+      fov: 55,
       shake: {atSec: 29.902, frames: 96, amp: 0.012},
     },
-    actors: [{who: 'kepala_pengawal', pose: 'berjalan_mantap', expression: 'angry', position: [0, 0, 0], rotationY: Math.PI, seed: 4}],
+    actors: [{who: 'kepala_pengawal', pose: 'berjalan_mantap', expression: 'angry', position: [0, 0, -2.0], rotationY: Math.PI, seed: 4}],
   },
   {
     n: 11,
@@ -227,12 +237,12 @@ const SEEDS: BeatSeed[] = [
     mood: 'biru_malam',
     /* Two static CUs. Zero camera movement, deliberately, to hold the beat. */
     camera: {
-      pos: [0.76, 1.35, 2.85],
-      target: [0, 1.25, 0],
+      pos: [1.3, 1.95, 5.0],
+      target: [0, 1.4, 0],
       zoomEnd: 1,
       transition: 'cut',
       fov: 36,
-      subCuts: [{atSec: 36.66, pos: [-0.76, 0.3, 2.66], target: [0, 0.7, 0], zoomEnd: 1, fov: 36, transition: 'cut'}],
+      subCuts: [{atSec: 36.66, pos: [-1.7, 1.15, 4.7], target: [0, 1.05, 0], zoomEnd: 1, fov: 36, transition: 'cut'}],
     },
     actors: [
       {who: 'figuran_kahfi', pose: 'tegar', position: [0, 0, 0], rotationY: 0.1, seed: 21},

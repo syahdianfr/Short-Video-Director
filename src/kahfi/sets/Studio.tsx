@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react';
 import * as THREE from 'three';
-import {ToonPart, FlatPart, rand} from '../../lib/toon';
+import {ToonPart, FlatPart} from '../../lib/toon';
 import {Actors, Bara, type KahfiSetProps} from './common';
 import {NUR_CORE} from '../lighting';
 
@@ -76,92 +76,6 @@ export const StudioSet: React.FC<KahfiSetProps> = (p) => {
       ))}
 
       <Actors p={p} handProps={{fadhil: shielding ? 'none' : 'mangkuk_bara'}} />
-    </group>
-  );
-};
-
-/* ------------------------------------------------------------------ */
-/* Staging set for the three locations not yet built:                  */
-/* gang_batu, rumah_pintu, gerbang_kota.                               */
-/*                                                                     */
-/* It is a real, renderable set rather than an empty scene: ground,     */
-/* a back wall and two side masses, lit by the beat's own mood. Blocking*/
-/* and camera framing can be judged from it, and the adab rules still  */
-/* apply because the characters come from the same rig. A small label   */
-/* names the set so a still is never mistaken for finished work.       */
-/* ------------------------------------------------------------------ */
-export const StagingSet: React.FC<KahfiSetProps> = (p) => {
-  const {frame, beat} = p;
-  const narrow = beat.set === 'gang_batu';
-  const gate = beat.set === 'gerbang_kota';
-
-  return (
-    <group>
-      <ToonPart color="#7A6E5C" rotation={[-Math.PI / 2, 0, 0]} outline={false}>
-        <circleGeometry args={[60, 32]} />
-      </ToonPart>
-
-      {/* side masses: tight for the alley, open for the gate */}
-      {[-1, 1].map((s) => (
-        <ToonPart
-          key={s}
-          color={s < 0 ? '#8B7E6A' : '#80735F'}
-          position={[s * (narrow ? 1.5 : 3.4), 1.9, -2.0]}
-          scale={[narrow ? 1.0 : 2.2, 3.8, 7.0]}
-          outline={0.04}
-        >
-          <boxGeometry args={[1, 1, 1]} />
-        </ToonPart>
-      ))}
-
-      {gate ? (
-        <>
-          {/* heavy wooden gate leaves and a cross beam */}
-          {[-1, 1].map((s) => (
-            <ToonPart key={s} color="#6B4423" position={[s * 1.25, 1.9, -1.4]} rotation={[0, s * 0.5, 0]} outline={0.04}>
-              <boxGeometry args={[2.3, 3.8, 0.22]} />
-            </ToonPart>
-          ))}
-          <ToonPart color="#4A2F18" position={[0, 3.9, -1.4]} outline={0.04}>
-            <boxGeometry args={[6.4, 0.5, 0.6]} />
-          </ToonPart>
-        </>
-      ) : (
-        /* a doorway that leaks warm light, for the rumah_pintu beats */
-        <>
-          <ToonPart color="#5C4033" position={[0, 1.4, -1.9]} outline={0.035}>
-            <boxGeometry args={[1.2, 2.8, 0.18]} />
-          </ToonPart>
-          {/* Nur spilling through the door gap: T2 figures are inside. A real
-              Nur usage, so it takes the constant, not a copied hex. */}
-          <FlatPart color={NUR_CORE} position={[0.68, 1.4, -1.78]} transparent opacity={0.85}>
-            <planeGeometry args={[0.16, 2.6]} />
-          </FlatPart>
-          <pointLight color={NUR_CORE} intensity={2.6} distance={9} decay={2} position={[0.7, 1.5, -1.6]} />
-        </>
-      )}
-
-      {/* wall torch, so the night palette has one warm anchor */}
-      <group position={[narrow ? -1.0 : -2.3, 2.2, 0.4]}>
-        <ToonPart color="#F97316" emissive="#F97316" emissiveIntensity={1.4} scale={[1, 0.85 + 0.2 * Math.sin(frame * 0.7), 1]} outline={false}>
-          <coneGeometry args={[0.13, 0.4, 10]} />
-        </ToonPart>
-        <pointLight color="#F97316" intensity={4.2} distance={12} decay={2} />
-      </group>
-
-      {Array.from({length: 7}).map((_, i) => (
-        <ToonPart
-          key={i}
-          color="#6E6252"
-          position={[(rand(i * 3.1) - 0.5) * 5, 0.08, 1.4 + rand(i * 5.3) * 2.4]}
-          scale={0.12 + rand(i * 7.7) * 0.2}
-          outline={0.02}
-        >
-          <icosahedronGeometry args={[1, 0]} />
-        </ToonPart>
-      ))}
-
-      <Actors p={p} handProps={{kepala_pengawal: 'tombak', fadhil: 'buku_catatan'}} />
     </group>
   );
 };

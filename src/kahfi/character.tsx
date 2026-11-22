@@ -52,7 +52,10 @@ export const LOOKS_KAHFI: Record<Exclude<KahfiCharId, 'none'>, KahfiLook> = {
   /* ---- T2: the youths of the cave. Faces are always Nur. ---- */
   pemuda_tegak: {gamis: '#E8DCC8', jubah: '#8B6F47', skin: '#C68642', sandal: '#5C4033', belt: '#5C4033', headwear: 'imamah', headwearColor: '#E8DCC8', scale: 1},
   pemuda_muda: {gamis: '#6B7A4F', skin: '#A9714B', sandal: '#5C4033', headwear: 'kain_kepala', headwearColor: '#8A9A7A', scale: 0.92},
-  pemuda_berbekal: {gamis: '#4A5A6B', jubah: '#3C4A58', skin: '#8D5524', sandal: '#5C4033', belt: '#6B4423', headwear: 'imamah', headwearColor: '#4A5A6B', scale: 1.02},
+  /* Faded indigo, lifted from the series bible's #4A5A6B. The original read
+     as near-black against the saturated gold of the hook, where this character
+     carries the opening shot. Same hue, enough value to survive the key. */
+  pemuda_berbekal: {gamis: '#7C8DA2', jubah: '#5E6E82', skin: '#8D5524', sandal: '#5C4033', belt: '#6B4423', headwear: 'imamah', headwearColor: '#7C8DA2', scale: 1.02},
   figuran_kahfi: {gamis: '#D6CCB8', skin: '#A9714B', sandal: '#5C4033', headwear: 'kain_kepala', headwearColor: '#C2B9A4', scale: 0.97},
 
   /* ---- T3: anonymous opponents and townspeople ---- */
@@ -202,14 +205,18 @@ const poseTargets = (pose: KahfiPose, t: number, a: number, seed: number): Targe
     case 'merebah':
       return {
         ...base,
-        rh: [-0.5, 0.42, 0.5],
-        lh: [0.5, 0.42, 0.44],
-        rf: [-0.2, 0.12, 1.15],
-        lf: [0.2, 0.12, 1.02],
-        tilt: -0.62,
-        lean: 0.16,
-        bob: -0.62 + 0.007 * s(t * 1.1 + seed),
-        headPitch: -0.3,
+        /* Hands fall into the lap and the knees come up: a body that has
+           given out sitting against a wall. Spread limbs read as collapse,
+           which is the wrong note for the beat — they are asleep, safe. */
+        rh: [-0.28, 0.74, 0.36],
+        lh: [0.28, 0.74, 0.3],
+        rf: [-0.17, 0.26, 0.88],
+        lf: [0.17, 0.23, 0.78],
+        tilt: -0.46,
+        lean: 0.24,
+        bob: -0.44 + 0.007 * s(t * 1.1 + seed),
+        /* Chin down on the chest, not thrown back. */
+        headPitch: 0.3,
       };
 
     case 'berjongkok':

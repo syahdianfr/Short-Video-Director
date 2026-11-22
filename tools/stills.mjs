@@ -12,7 +12,8 @@ const browserExecutable = process.env.REMOTION_BROWSER || '/opt/pw-browsers/chro
 const chromiumOptions = {gl: process.env.REMOTION_GL || 'swangle'};
 const serveUrl = await bundle({entryPoint: path.resolve('src/index.ts')});
 const browser = await openBrowser('chrome', {browserExecutable, chromiumOptions});
-const composition = await selectComposition({serveUrl, id: 'Main', puppeteerInstance: browser, chromiumOptions});
+const compId = process.env.REMOTION_COMP || 'Main';
+const composition = await selectComposition({serveUrl, id: compId, puppeteerInstance: browser, chromiumOptions});
 for (const f of frames) {
   const t0 = Date.now();
   await renderStill({composition, serveUrl, frame: f, output: `${outDir}/f${String(f).padStart(4, '0')}.png`, puppeteerInstance: browser, chromiumOptions, scale});

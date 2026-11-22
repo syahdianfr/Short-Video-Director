@@ -9,6 +9,7 @@ import {AyatCardView, LabelView, LoopGrade, SeriesBadge} from './Overlay';
 import type {KahfiMouth} from './faces';
 import type {KahfiSetId} from './types';
 import type {KahfiSetProps} from './sets/common';
+import {useTexturesReady} from './textures';
 import {KotaPasarSet, KuilTanggaSet} from './sets/Kota';
 import {InteriorGuaSet, LanskapBukitSet, LerengBukitSet, MulutGuaSet} from './sets/Gua';
 import {StagingSet, StudioSet} from './sets/Studio';
@@ -64,6 +65,9 @@ export const KahfiMain: React.FC<KahfiProps> = ({withAudio = true}) => {
   const beat = beatAt(sec);
   const cam = kahfiCameraAt(beat, frame, fps);
   const mouth = useMouth(frame, fps);
+  /* The 3D scene waits for the textures. Mounting it earlier draws every
+     mapped surface black and never redraws it. See textures.ts. */
+  const texturesReady = useTexturesReady();
   const SetComp = SETS[beat.set];
 
   const localFrame = frame - Math.round(beat.startSec * fps);
@@ -90,7 +94,7 @@ export const KahfiMain: React.FC<KahfiProps> = ({withAudio = true}) => {
           <KahfiLighting mood={beat.mood} />
           <KahfiCamera beat={beat} frame={frame} fps={fps} />
           {/* keyed on the set id so a location change remounts cleanly */}
-          <SetComp key={beat.set} {...setProps} />
+          {texturesReady ? <SetComp key={beat.set} {...setProps} /> : null}
         </ThreeCanvas>
       </AbsoluteFill>
 

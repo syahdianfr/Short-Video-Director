@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import {ToonPart, FlatPart, rand} from '../../lib/toon';
 import {Actors, Ground, Batu, PohonKurma, DebuCahaya, Bintang, type KahfiSetProps} from './common';
 import {MOTE_WARM} from '../lighting';
+import {kahfiTexture} from '../textures';
 
 /**
  * CONTINUITY CONSTANT — do not change without updating Part 2.
@@ -63,7 +64,7 @@ const Bukit: React.FC<{frame: number; palms?: boolean}> = ({frame, palms = false
 const MassaGua: React.FC<{inside: boolean}> = ({inside}) => (
   <group rotation={[0, CAVE_MOUTH_YAW, 0]}>
     {/* outer rock face */}
-    <ToonPart color="#776A5A" position={[0, 1.6, -4.4]} scale={[7.0, 4.4, 4.0]} outline={0.045}>
+    <ToonPart color="#776A5A" map={kahfiTexture('rock_face_03', 2)} position={[0, 1.6, -4.4]} scale={[7.0, 4.4, 4.0]} outline={0.045}>
       <icosahedronGeometry args={[1, 1]} />
     </ToonPart>
     <ToonPart color="#6B5F50" position={[-4.2, 1.0, -2.6]} scale={[2.6, 2.8, 2.4]} rotation={[0, 0.6, 0.1]} outline={0.04}>
@@ -73,7 +74,7 @@ const MassaGua: React.FC<{inside: boolean}> = ({inside}) => (
       <icosahedronGeometry args={[1, 0]} />
     </ToonPart>
     {/* lintel above the opening */}
-    <ToonPart color="#7E7161" position={[0, 3.5, -1.5]} scale={[3.4, 1.1, 1.6]} rotation={[0.12, 0, 0.04]} outline={0.04}>
+    <ToonPart color="#7E7161" map={kahfiTexture('rock_face_03', 1.4)} position={[0, 3.5, -1.5]} scale={[3.4, 1.1, 1.6]} rotation={[0.12, 0, 0.04]} outline={0.04}>
       <icosahedronGeometry args={[1, 0]} />
     </ToonPart>
     {/* the dark throat of the cave: unlit, so it stays black in every mood */}
@@ -157,7 +158,7 @@ export const InteriorGuaSet: React.FC<KahfiSetProps> = (p) => {
   return (
     <group>
       {/* cave walls */}
-      <ToonPart geometry={shell} color="#2F3747" side={THREE.BackSide} outline={false} position={[0, 1.2, 0]} scale={[1, 0.62, 1]} />
+      <ToonPart geometry={shell} color="#2F3747" map={kahfiTexture('rock_face_03', 3)} side={THREE.BackSide} outline={false} position={[0, 1.2, 0]} scale={[1, 0.62, 1]} />
       {/* sandy floor */}
       <ToonPart color="#4A4234" rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} outline={false}>
         <circleGeometry args={[6.2, 30]} />

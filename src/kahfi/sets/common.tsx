@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import {ToonPart, FlatPart, rand} from '../../lib/toon';
 import {ChibiCharacter, Anjing} from '../character';
 import {groundColor, MOTE_COOL, MOTE_WARM} from '../lighting';
+import {kahfiTexture} from '../textures';
 import type {KahfiExpression, KahfiMouth} from '../faces';
 import type {KahfiBeat, KahfiPropId, Vec3} from '../types';
 
@@ -182,8 +183,18 @@ export const Bara: React.FC<{frame: number; position?: Vec3; scale?: number; int
 /* Environment helpers                                                 */
 /* ------------------------------------------------------------------ */
 
-export const Ground: React.FC<{mood: KahfiBeat['mood']; size?: number; y?: number}> = ({mood, size = 90, y = 0}) => (
-  <ToonPart color={groundColor(mood)} rotation={[-Math.PI / 2, 0, 0]} position={[0, y, 0]} outline={false}>
+export const Ground: React.FC<{mood: KahfiBeat['mood']; size?: number; y?: number; textured?: boolean}> = ({
+  mood,
+  size = 90,
+  y = 0,
+  textured = true,
+}) => (
+  <ToonPart
+    color={groundColor(mood)}
+    rotation={[-Math.PI / 2, 0, 0]}
+    position={[0, y, 0]}
+    outline={false}
+  >
     <circleGeometry args={[size, 40]} />
   </ToonPart>
 );
@@ -197,6 +208,7 @@ export const Batu: React.FC<{position: Vec3; scale?: number; seed?: number; colo
 }) => (
   <ToonPart
     color={color}
+    map={kahfiTexture('rock_boulder_dry', 1)}
     position={position}
     scale={[scale * (0.8 + rand(seed) * 0.5), scale * (0.6 + rand(seed + 1) * 0.5), scale * (0.8 + rand(seed + 2) * 0.5)]}
     rotation={[rand(seed + 3) * 0.6, rand(seed + 4) * 6.28, rand(seed + 5) * 0.6]}

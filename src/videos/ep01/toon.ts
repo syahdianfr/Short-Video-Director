@@ -18,6 +18,10 @@ export type Outfit = {
   jacket: string; pants: string; boots: string; hat?: string | null; belt?: string | null; buttons?: string; rifle?: boolean;
   sash?: string; sword?: boolean; moustache?: string; skin?: string; head?: number; cap?: string; hair?: string; dress?: string;
   build?: Build;
+  /** ep01: a long thobe (robe) to mid-shin with sleeves drawn in front of the body; needs `dress` as its colour */
+  robe?: boolean;
+  /** ep01: full beard colour */
+  beard?: string;
 };
 type P2 = [number, number];
 
@@ -227,7 +231,7 @@ const DEF_LIGHT = rad(-120);
 
 // ---------------- faces ----------------
 export type Expr = "neutral" | "stern" | "grin" | "laugh" | "whistle" | "nervous" | "shock" | "relief" | "relief_open" | "dazed"
-  | "pained" | "smile" | "smile_closed" | "lick";
+  | "pained" | "smile" | "smile_closed" | "lick" | "calm";
 type EyeK = "dot" | "small" | "lid" | "slit" | "happy" | "dash" | "squeeze" | "shock" | "shockHalf" | "spiral";
 type MouthK = "dash" | "frown" | "smirk" | "smile" | "smileWide" | "grin" | "laugh" | "o" | "O" | "wave" | "teeth" | "lick";
 /** eyes [back, front], brows [inner, outer] offsets in u (+ = down), mouth kind */
@@ -246,6 +250,7 @@ const FACE: Record<Expr, { eye: [EyeK, EyeK]; brow: [number, number]; mouth: Mou
   smile: { eye: ["dot", "dot"], brow: [0, -1], mouth: "smirk" },
   smile_closed: { eye: ["happy", "happy"], brow: [0, -1], mouth: "smile" },
   lick: { eye: ["dot", "dot"], brow: [0, -1], mouth: "lick" },
+  calm: { eye: ["dot", "dot"], brow: [1, 0], mouth: "dash" },
 };
 const halfLid = (k: EyeK): EyeK => (k === "dot" || k === "small" ? "lid" : k === "lid" ? "slit" : k === "shock" ? "shockHalf" : k);
 const eyeKind = (k: EyeK, lid: number): EyeK =>
@@ -436,7 +441,7 @@ const hatOn = (p: Pen, o: Outfit, hp: P2[], H: Blob, cx: number, hc: number, lig
 // ---------------- bodies ----------------
 export type Arms = [P2[], P2[]];
 /** held prop; for the hammer the number is the strike 0 (raised) .. 1 (struck) */
-export type Prop = null | "icecream" | "shako" | ["hammer", number];
+export type Prop = null | "icecream" | "shako" | "staff" | ["hammer", number];
 
 const BUILD: Record<Build, { a: number; torso: number; legs: number; tw: number }> = {
   adult: { a: 118, torso: 1.1, legs: 1.4, tw: 0.8 },
@@ -525,13 +530,17 @@ export const bodyFront = (p: Pen, o: Outfit, opts: FrontOpts) => {
   if (mode === "sit") for (const side of [-1, 1]) arms.push({ pts: [sh(side), [tcx + side * (1.1 * T.a + 6 * u), sh(side)[1] + 0.4 * HH], [tcx + side * (1.2 * T.a + 10 * u), torsoBot + 0.04 * HH]], front: false });
   else if (mode === "fall") for (const side of [-1, 1]) arms.push({ pts: [sh(side), [tcx + side * (1.15 * T.a + 12 * u), sh(side)[1] - 0.25 * HH], [tcx + side * (1.3 * T.a + 24 * u), sh(side)[1] - 0.68 * HH]], front: false });
   else {
-    arms.push({ pts: prop === "shako" ? hang(-1, 0) : hang(-1, -sw), front: false });
+    arms.push({ pts: prop === "shako" ? hang(-1, 0) : hang(-1, -sw), front: !!o.robe });
     if (rifle) {
       const G = lerp2(R0, R1, 0.1);
       arms.push({ pts: [sh(1), [tcx + 1.12 * T.a + 5 * u, sh(1)[1] + 0.45 * HH], G], front: false });
     } else if (wave !== undefined) {
       const S = sh(1);
       arms.push({ pts: [S, [tcx + 1.1 * T.a + 10 * u + 3 * u * wave, S[1] - 0.22 * HH], [tcx + 1.18 * T.a + 16 * u + 12 * u * wave, S[1] - 0.6 * HH]], front: false });
+    } else if (prop === "staff") {
+      // ep01: right hand closed round a shepherd's staff at chest height, elbow out
+      const S = sh(1);
+      arms.push({ pts: [S, [tcx + 1.18 * T.a + 6 * u, S[1] + 0.36 * HH], [tcx + 1.05 * T.a + 4 * u, S[1] + 0.5 * HH]], front: true });
     } else if (prop === "icecream") {
       const S = sh(1);
       arms.push({ pts: [S, [tcx + 1.05 * T.a + 4 * u, S[1] + 0.45 * HH], [tcx + 0.5 * T.a, S[1] + 0.4 * HH]], front: true });
@@ -542,7 +551,14 @@ export const bodyFront = (p: Pen, o: Outfit, opts: FrontOpts) => {
       arms.push({ pts: [S, E, Hd], front: true });
     } else arms.push({ pts: hang(1, sw), front: false });
   }
-  const drawArm = (a: Arm) => { p.stroke(curve(a.pts[0], a.pts[1], a.pts[2]), 5.2 * u, armCol); p.dot(a.pts[2][0], a.pts[2][1], 5.5 * u); };
+  const drawArm = (a: Arm) => {
+    if (o.robe) { // loose sleeve in the robe colour with an ink rim, ending a little short of the hand
+      const c = curve(a.pts[0], a.pts[1], a.pts[2]); const cut = c.slice(0, c.length - 1);
+      p.line(cut, mul(o.dress!, [0.93, 0.92, 0.94]), 10 * u);
+      p.dot(a.pts[2][0], a.pts[2][1], 6 * u); return;
+    }
+    p.stroke(curve(a.pts[0], a.pts[1], a.pts[2]), 5.2 * u, armCol); p.dot(a.pts[2][0], a.pts[2][1], 5.5 * u);
+  };
   // behind the body: rifle, sword, arms
   if (rifle) {
     p.band([R0, R1], "#7a4b2a", 5 * u, 1.5 * u, "round");
@@ -554,7 +570,22 @@ export const bodyFront = (p: Pen, o: Outfit, opts: FrontOpts) => {
   }
   for (const a of arms) if (!a.front) drawArm(a);
   // torso / dress: shaded fill -> clothing clipped to it -> thick-thin ink ring
-  if (dress) {
+  if (dress && o.robe) {
+    // thobe: rounded shoulders, gently widening to a hem at mid-shin, rope belt, a few long folds, a small neck opening
+    const sy = chin + 0.04 * HH, wy = torsoBot - 0.08 * HH, hy = sole - 0.3 * HH, cx0 = 300 + 2 * u * facing;
+    const left = curve([cx0 - 0.34 * W, sy + 0.1 * HH], [cx0 - 0.47 * W, wy], [cx0 - 0.53 * W, hy], 12);
+    const right = curve([cx0 + 0.53 * W, hy], [cx0 + 0.47 * W, wy], [cx0 + 0.34 * W, sy + 0.1 * HH], 12);
+    const hem: P2[] = []; for (let i = 1; i < 10; i++) { const t = i / 10; hem.push([cx0 - 0.53 * W + 1.06 * W * t, hy + 2.5 * u * Math.sin(t * Math.PI * 3)]); }
+    const top = curve([cx0 + 0.34 * W, sy + 0.1 * HH], [cx0, sy - 0.06 * HH], [cx0 - 0.34 * W, sy + 0.1 * HH], 10);
+    const rp: P2[] = [...left, ...hem, ...right, ...top.slice(1, -1)];
+    p.gradFill(rp, o.dress!, mul(o.dress!, SH_CLOTH), light);
+    p.clip(rp, () => {
+      for (const k of [-0.28, -0.06, 0.2, 0.36]) p.stroke(curve([cx0 + k * W, wy + 0.05 * HH], [cx0 + (k * 1.05 + 0.01) * W, (wy + hy) / 2], [cx0 + k * 1.12 * W, hy + 4 * u], 8), 1.6 * u, mul(o.dress!, [0.74, 0.72, 0.78]));
+      p.band([[cx0 - 0.6 * W, wy], [cx0 + 0.6 * W, wy - 2 * u]], o.belt ?? "#6b4f33", 4 * u, 1.2 * u);
+      p.stroke([[cx0 - 6 * u, sy - 0.01 * HH], [cx0, sy + 0.12 * HH], [cx0 + 6 * u, sy - 0.01 * HH]], 1.8 * u, mul(o.dress!, [0.6, 0.58, 0.64]));
+    });
+    p.poly(rp, null, ow);
+  } else if (dress) {
     const D: Blob = { a: 0.5 * W * 0.98, b: 0.5 * ((sole - 0.35 * HH) - (chin - 0.2 * HH)), nTop: 2.0, nBot: 3.0, egg: 0.35, asym: 0.03 * facing, rot: 0, noise: 0.006, seed: seed + 9 };
     const dp = blobPts(300, sole - 0.35 * HH - D.b, D);
     p.gradFill(dp, o.dress!, mul(o.dress!, SH_CLOTH), light);
@@ -582,6 +613,7 @@ export const bodyFront = (p: Pen, o: Outfit, opts: FrontOpts) => {
     p.inkRing(tp, ow, thick);
   }
   // in front of the body: hands holding props
+  if (prop === "staff") { const a = arms.find((x) => x.front && x.pts[2][0] > 300); if (a) { const [hx] = a.pts[2]; p.band([[hx + 2 * u, sole + 2 * u], [hx - 3 * u, crown - 0.22 * HH]], "#7a5636", 5 * u, 1.6 * u, "round"); } }
   for (const a of arms) if (a.front) {
     drawArm(a);
     const [hx, hy] = a.pts[2];
@@ -613,6 +645,14 @@ export const bodyFront = (p: Pen, o: Outfit, opts: FrontOpts) => {
   hatOn(p, o, hp, H, 300, hc, light, seed, facing, false);
   const brim = !!o.hat && o.hat !== "hair" && o.hat !== "bonnet" && o.hat !== "cap";
   faceFront(p, 300, hc, W, expr, facing, look, lid, brim, skin, o.moustache, o.build === "stout");
+  if (o.beard) { // full beard hanging from the jaw, below the mouth, cut to a soft point
+    const fx = 300 + 7 * u * facing, by = hc + 25 * u;
+    const bp: P2[] = [...curve([fx - 34 * u, hc + 14 * u], [fx - 26 * u, hc + 46 * u], [fx, hc + H.b + 20 * u], 10), ...curve([fx, hc + H.b + 20 * u], [fx + 26 * u, hc + 46 * u], [fx + 34 * u, hc + 14 * u], 10).slice(1),
+      ...curve([fx + 34 * u, hc + 14 * u], [fx + 12 * u, by], [fx - 12 * u, by], 6).slice(1, -1)];
+    p.gradFill(bp, o.beard, mul(o.beard, [0.7, 0.68, 0.74]), light, 0.3);
+    p.poly(bp, null, ow * 0.85);
+    mouth(p, FACE[expr].mouth, 300 + 8 * u * facing, hc + 20 * u, u);
+  }
   p.rot = null;
 };
 

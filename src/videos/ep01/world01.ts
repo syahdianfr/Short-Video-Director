@@ -104,7 +104,7 @@ export const SHOTS: ShotDef[] = [
     cam: (f) => { const u = smooth((f - 90) / 90); return { pos: POV, look: lerp3([1.3, 1.7, 14], [1.4, 1.6, 14], u), fov: 58 }; } },
   // 3: POV: the light has come close and settled right in front of the seated place
   { id: 3, a: 180, b: 270, set: "mosque", light: MOSQUE_DAY, grade: "day", cInf: 8, focus: [0.9, 0.95, -8.7],
-    cam: (f) => { const u = smooth((f - 180) / 90); return { pos: lerp3(POV, [0.9, 1.05, -10.35], u), look: [0.9, 1.0, -6], fov: 58 }; } },
+    cam: (f) => { const u = smooth((f - 180) / 90); return { pos: lerp3(POV, [0.9, 1.05, -10.35], u), look: [0.9, 0.45, -6.5], fov: 58 }; } },
   // 4 (check only): goats seen side-on, close, sharp
   { id: 4, a: 270, b: 300, set: "desert", light: DESERT_DAY, grade: "day", cInf: 0,
     cam: () => ({ pos: [-0.6, 0.9, 1.6], look: [-0.6, 0.55, -2.2], fov: 40 }) },
@@ -114,17 +114,14 @@ export const shotAt = (f: number) => SHOTS.find((s) => f >= s.a && f < s.b) ?? S
 
 /** where Jibril's light is at frame f (shots 2-3): from the north door across the courtyard to the seated place */
 const lightPath = (f: number): V3 => {
-  if (f < 180) { const u = smooth((f - 100) / 80); return lerp3([1.4, 1.4, 15.2], [1.6, 1.3, 13.5], u); }
-  return [0.9, 0.95, -8.7];
+  if (f < 180) { const u = smooth((f - 100) / 80); return lerp3([1.5, 0, 14.4], [1.5, 0, 11.5], u); }
+  return [0.9, 0, -8.6];
 };
 
 // ---------------- characters ----------------
-const SHEPHERD: Outfit = { jacket: "#9c7a57", pants: "#6a5440", boots: "#c99067", dress: "#b89a74", skin: "#c99067", hat: "imama", cap: "#e9dfc9", moustache: "#2a1d16" };
-const drawShepherd = (p: Pen) => {
-  // staff behind the body, held by the right hand
-  p.band([[425, 985], [398, 210]], "#7a5636", 9, 3, "round");
-  bodyFront(p, SHEPHERD, { mode: "stand", expr: "neutral", seed: 11, facing: 1, look: 0.3, light: -2.4 });
-};
+const SHEPHERD: Outfit = { jacket: "#b89a74", pants: "#6a5440", boots: "#c99067", dress: "#c4aa82", robe: true, belt: "#6b4f33", skin: "#c99067",
+  hat: "imama", cap: "#e9dfc9", beard: "#2a1d16", moustache: "#2a1d16" };
+const drawShepherd = (p: Pen) => bodyFront(p, SHEPHERD, { mode: "stand", expr: "calm", seed: 11, facing: 1, look: 0.3, light: -2.4, prop: "staff" });
 
 // ---------------- the world ----------------
 const lam = (o: THREE.MeshLambertMaterialParameters) => twoTone(new THREE.MeshLambertMaterial(o));
@@ -144,7 +141,7 @@ class Ep01World {
   private pool = new Pool();
   private shepherd: Actor;
   private goats: { g: Goat; x: number; z: number; yaw: number; walk: number; graze: number }[] = [];
-  private jib: { core: THREE.Sprite; halo: THREE.Sprite; light: THREE.PointLight };
+  private jib: { pool: THREE.Mesh; door: THREE.Mesh; shafts: THREE.Mesh[]; light: THREE.PointLight };
   private dust: THREE.Points;
 
   constructor(private A: Assets) {
@@ -165,19 +162,31 @@ class Ep01World {
     this.buildDesert();
     this.buildMosque();
     this.shepherd = new Actor(this.desert);
-    // Jibril: light only. A soft round glow (never a figure), a halo, and a warm point light that lights the floor.
-    const glow = (k: number) => {
-      const cv = document.createElement("canvas"); cv.width = cv.height = 256; const g = cv.getContext("2d")!;
-      const gr = g.createRadialGradient(128, 128, 0, 128, 128, 128);
-      gr.addColorStop(0, "rgba(255,255,255,1)"); gr.addColorStop(k, "rgba(255,250,235,0.55)"); gr.addColorStop(1, "rgba(255,250,235,0)");
-      g.fillStyle = gr; g.fillRect(0, 0, 256, 256);
-      const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace; return t;
+    // Jibril: light only, never a figure, never an orb. A pool of light on the floor where he is, a few thin shafts of
+    // light falling onto it from above (uneven widths and spacing, so they never add up to a body), and the doorway
+    // glowing when he enters. Additive and bright enough to bloom softly.
+    const grad = (w: number, h: number, fn: (x: number, y: number) => number) => {
+      const cv = document.createElement("canvas"); cv.width = w; cv.height = h; const g = cv.getContext("2d")!, im = g.createImageData(w, h);
+      for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) { const i = (y * w + x) * 4, a = Math.max(0, Math.min(1, fn(x / (w - 1), y / (h - 1)))); im.data[i] = im.data[i + 1] = 255; im.data[i + 2] = 240; im.data[i + 3] = Math.round(255 * a); }
+      g.putImageData(im, 0, 0); const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace; return t;
     };
-    const core = new THREE.Sprite(new THREE.SpriteMaterial({ map: glow(0.35), color: new THREE.Color(2.2, 2.1, 1.9), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }));
-    const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: glow(0.15), color: new THREE.Color(0.32, 0.3, 0.24), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }));
-    for (const s of [core, halo]) { s.layers.set(NOINK); s.renderOrder = 6; this.mosque.add(s); }
-    const pl = new THREE.PointLight("#fff4dc", 0, 9, 1.6); this.mosque.add(pl);
-    this.jib = { core, halo, light: pl };
+    const add2 = (map: THREE.Texture, col: [number, number, number]) => new THREE.MeshBasicMaterial({ map, color: new THREE.Color(...col), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide, fog: false });
+    const poolTex = grad(256, 256, (x, y) => { const r = Math.hypot((x - 0.5) * 2, (y - 0.5) * 2); return (1 - r) ** 1.6; });
+    const poolG = new THREE.PlaneGeometry(1, 1); poolG.rotateX(-Math.PI / 2);
+    const pool = new THREE.Mesh(poolG, add2(poolTex, [1.5, 1.4, 1.15]));
+    // soft shafts: widest and brightest where they land in the pool, fading out well below the roof
+    const shaftTex = grad(64, 256, (x, y) => (1 - Math.abs(x - 0.5) * 2) ** 2 * Math.sin(Math.PI * Math.min(1, y * 1.15)) ** 1.5);
+    const shafts = [-0.22, -0.05, 0.12, 0.26].map((dx, i) => {
+      const g = new THREE.PlaneGeometry(0.16 + 0.1 * rnd(i + 40), 2.4); g.translate(0, 1.2, 0); g.rotateZ(0.16);
+      const m = new THREE.Mesh(g, add2(shaftTex, [0.42, 0.4, 0.32])); m.userData.dx = dx; m.userData.dz = 0.25 * (rnd(i + 50) - 0.5); return m;
+    });
+    // the doorway fills with light and glows onto the wall face around it
+    const doorTex = grad(128, 128, (x, y) => { const dx = Math.max(0, Math.abs(x - 0.5) * 2 - 0.5) / 0.5; return (1 - dx) ** 2 * (0.3 + 0.7 * Math.min(1, (1 - y) * 1.6)); });
+    const door = new THREE.Mesh(new THREE.PlaneGeometry(3.2, 3.0), add2(doorTex, [1.1, 1.05, 0.9]));
+    door.position.set(1.5, 1.2, 14.6); door.rotation.y = Math.PI;
+    for (const m of [pool, door, ...shafts]) { m.layers.set(NOINK); m.renderOrder = 6; this.mosque.add(m); }
+    const pl = new THREE.PointLight("#fff4dc", 0, 7, 1.6); this.mosque.add(pl);
+    this.jib = { pool, door, shafts, light: pl };
     // dust motes floating in the portico air (lit by the light)
     const n = 500, pos = new Float32Array(n * 3);
     for (let i = 0; i < n; i++) pos.set([-6 + 16 * rnd(i + 1), 0.3 + 3 * rnd(i + 7), -14 + 10 * rnd(i + 13)], i * 3);
@@ -338,14 +347,21 @@ class Ep01World {
     } else this.shepherd.mesh.visible = false;
     // ---- mosque: Jibril's light ----
     const on = s.set === "mosque";
-    this.jib.core.visible = this.jib.halo.visible = on;
+    for (const m of [this.jib.pool, this.jib.door, ...this.jib.shafts]) m.visible = on;
     if (on) {
-      const k = smooth((f - 96) / 30);
-      const p = lightPath(f);
-      this.jib.core.position.set(...p); this.jib.halo.position.set(...p);
-      const sz = s.id === 3 ? 0.75 : 1.6;
-      this.jib.core.scale.setScalar(sz * k); this.jib.halo.scale.setScalar(sz * (s.id === 3 ? 1.7 : 3.0) * k);
-      this.jib.light.position.set(p[0], p[1] + 0.2, p[2]); this.jib.light.intensity = (s.id === 3 ? 2.5 : 6) * k;
+      const k = smooth((f - 96) / 30), p = lightPath(f), near = s.id === 3;
+      // doorway glows as he enters (shot 2), fades once he is inside
+      this.jib.door.visible = !near; (this.jib.door.material as THREE.MeshBasicMaterial).opacity = k;
+      // pool: under him when near; at the door it spills into the courtyard toward the camera
+      if (near) { this.jib.pool.position.set(p[0], 0.02, p[2]); this.jib.pool.scale.set(1.5 * k, 1, 1.7 * k); }
+      else { this.jib.pool.position.set(p[0], 0.02, p[2] - 1.6); this.jib.pool.scale.set(2.6 * k, 1, 6 * k); }
+      const yaw = Math.atan2(cam.position.x - p[0], cam.position.z - p[2]);
+      this.jib.shafts.forEach((m, i) => {
+        m.position.set(p[0] + m.userData.dx * Math.cos(yaw), 0, p[2] - m.userData.dx * Math.sin(yaw) + m.userData.dz);
+        m.rotation.set(0, yaw, 0);
+        m.visible = near; (m.material as THREE.MeshBasicMaterial).opacity = k * (0.6 + 0.4 * Math.sin(t * 1.3 + i * 1.7) ** 2);
+      });
+      this.jib.light.position.set(p[0], 0.6, p[2]); this.jib.light.intensity = (near ? 3 : 5) * k;
       (this.dust.material as THREE.PointsMaterial).opacity = 0.35 + 0.3 * Math.sin(t * 0.7) ** 2;
       this.dust.rotation.y = t * 0.01;
     } else this.jib.light.intensity = 0;

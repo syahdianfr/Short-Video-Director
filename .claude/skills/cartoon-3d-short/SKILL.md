@@ -28,14 +28,15 @@ Technical base: the look engine from the original "bridge" short (`templates/bri
 - Any prophet or messenger, e.g. Muhammad ﷺ, Ibrahim, Musa, 'Isa, Yusuf or Nuh (peace be upon them).
 - The Prophet's wives and his family (Ahl al-Bayt).
 - The companions (sahabah). This is the conservative default, and it covers the four caliphs, the ten promised Paradise and every named companion.
-- Angels, the jinn and Iblis.
+- Angels as figures. An angel is shown ONLY as light (a shaft, a glow, a brightening of the scene) that never takes a human or winged shape.
+- The jinn and Iblis as figures. They are shown ONLY as fire or smoke-tinged flame with no face, eyes or body.
 
-Show them through their presence instead:
+Show the prophets, their family and the companions through their presence instead:
 - Warm light falling into a room, an empty spot in a row, an open door, a camel led by a rope whose holder stays out of frame.
 - Footprints in sand, a staff, a shadow that never resolves into a body, the reactions of ordinary people, or a point-of-view camera.
 - Never a glowing human outline. That is still a depiction.
 
-**Who may be a character card:** only ordinary, unnamed people (a merchant, a traveller, a student, a farmer) and later historical figures who are not companions (scholars, builders, scientists), if the user approves each one.
+**Who may be a character card, WITH a face (decided by the user):** everyone not in the list above. That means ordinary people (a merchant, a traveller, a student, a farmer), and historical figures who are not prophets, the Prophet's family or companions (later scholars, rulers, builders, scientists, e.g. al-Khwarizmi, Ibn Sina, Salahuddin, Walisongo). Their look follows historical sources: period clothing, region and age from the history books and the reference board (`docs/04-referensi-karakter.md`), never a modern guess.
 - Characters dress modestly and plausibly for their period. Women wear hijab and loose clothing. No exposed awrah.
 - No romance scenes, no music-playing characters and no alcohol.
 - Expressions are dignified. Grief, awe, gratitude, determination and concentration are fine. Laughing is not, and neither are mocking faces, smug faces or exaggerated gags.

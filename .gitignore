@@ -5,3 +5,6 @@ out
 # cartoon-3d-short: reference frames are private study material (skill rule: never upload)
 .claude/skills/cartoon-3d-short/references/frames/
 .claude/skills/cartoon-3d-short/references/sheets/
+
+# derived audio (rebuild from voice.mp3)
+episodes/*/voice.wav

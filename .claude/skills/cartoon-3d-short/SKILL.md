@@ -36,6 +36,13 @@ Show the prophets, their family and the companions through their presence instea
 - Footprints in sand, a staff, a shadow that never resolves into a body, the reactions of ordinary people, or a point-of-view camera.
 - Never a glowing human outline. That is still a depiction.
 
+**Series visual language for presence (never break it, so viewers learn it):**
+- **Light is for angels only.** Never use light, a glow or a halo to stand for the Prophet ﷺ or any prophet. A viewer who sees light and hears "Nabi" will read the light as the Prophet; that must never be possible. When the narration names the Prophet ﷺ while an angel's light is on screen, the light must clearly be a visitor moving toward someone else.
+- **The Prophet ﷺ is present only as the camera's point of view.** The camera sits at the eye height of a person sitting cross-legged (~1.0-1.1 m), at the same recurring place (the early Masjid Nabawi: palm-trunk pillars, palm-frond roof). Others or a visiting light approach the camera and settle in front of it. The narration carries who he is ("di depan beliau").
+  - Some scholars object to placing the viewer in the Prophet's position: note this in `SCRIPT.md` for the ustadz review of every episode that uses it.
+  - The POV camera never shows hands, feet, clothing or a shadow of the person it stands for.
+- **Companions are present only through traces:** a row of sandals at the door, an empty place in a row, sound (a murmur of voices without words), never hands, backs, shadows or silhouettes.
+
 **Who may be a character card, WITH a face (decided by the user):** everyone not in the list above. That means ordinary people (a merchant, a traveller, a student, a farmer), and historical figures who are not prophets, the Prophet's family or companions (later scholars, rulers, builders, scientists, e.g. al-Khwarizmi, Ibn Sina, Salahuddin, Walisongo). Their look follows historical sources: period clothing, region and age from the history books and the reference board (`docs/04-referensi-karakter.md`), never a modern guess.
 - Characters dress modestly and plausibly for their period. Women wear hijab and loose clothing. No exposed awrah.
 - No romance scenes, no music-playing characters and no alcohol.

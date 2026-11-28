@@ -21,17 +21,21 @@ Semua nomor di bawah WAJIB dicek ke sunnah.com sebelum tayang. Skill `ansari` be
 Sengaja tidak dimasukkan: nama negara atau gedung tertentu, angka tinggi gedung, dan tafsiran "tanda ini sudah terjadi di X". Tanda "budak melahirkan tuannya" dari hadits yang sama dilewati karena butuh penjelasan panjang.
 
 ## Rencana visual dan adab (siapa yang tampil)
-Nabi ﷺ dan para sahabat (termasuk Umar, perawi hadits) TIDAK tampil. Jibril hanya tampil sebagai cahaya, tanpa bentuk manusia.
+Nabi ﷺ dan para sahabat (termasuk Umar, perawi hadits) TIDAK tampil. Bahasa visual seri:
+- **Cahaya = malaikat saja** (di sini Jibril). Cahaya tidak pernah mewakili Nabi ﷺ.
+- **Nabi ﷺ = sudut pandang kamera (POV)**: kamera setinggi mata orang duduk bersila (~1,05 m) di tempat yang sama di masjid. Tidak ada tangan, kaki, pakaian, atau bayangan.
+- **Sahabat = jejak saja**: deretan sandal, suara gumam tanpa kata. Tidak ada tangan, punggung, atau siluet.
+- **Untuk review ustadz:** sebagian ulama keberatan penonton ditempatkan di posisi Nabi ﷺ (POV). Tanyakan sebelum produksi; alternatifnya kamera samping yang memandang tempat kosong.
 
 | # | VO | Tampil di layar | Tidak tampil |
 |---|---|---|---|
 | 1 | Hook | Kaki telanjang penggembala di pasir → kamera naik ke gedung-gedung yang menembus awan | — |
-| 2 | Madinah, sahabat duduk | Masjid Nabawi awal: tiang batang kurma, atap pelepah, cahaya siang. Deretan sandal di pintu. | Nabi ﷺ, sahabat |
-| 3 | Laki-laki datang | Cahaya putih terang masuk lewat pintu. Pasir di depan pintu mulus tanpa jejak kaki. | Sosok Jibril |
-| 4 | Tanya jawab, sahabat heran | Kamera pelan di dalam masjid; cahaya diam di satu titik; debu melayang di berkas cahaya | Semua orang |
+| 2 | Madinah, sahabat duduk | Masjid Nabawi awal: tiang batang kurma, atap pelepah, cahaya siang. Deretan sandal di pintu, gumam suara tanpa kata. Kamera lalu turun ke POV duduk bersila menghadap pintu. | Nabi ﷺ, sahabat |
+| 3 | Laki-laki datang | Dari POV: cahaya putih (Jibril) muncul di pintu. Pasir di depan pintu mulus tanpa jejak kaki. Cahaya bergerak mendekati kamera. | Sosok Jibril, Nabi ﷺ |
+| 4 | Tanya jawab, sahabat heran | POV: cahaya berhenti dan "duduk" tepat di depan kamera, sangat dekat. Debu melayang. Kamera tetap diam di POV (sedikit push-in) supaya jelas cahaya itu tamu yang mendatangi beliau. | Semua orang |
 | 5 | "kapan kiamat?" | Langit sore di atas Madinah, kamera mendongak | — |
 | 6 | Kutipan hadits (nada serius) | Penggembala kambing berwajah, bertelanjang kaki, di padang gurun; time-lapse: kemah → rumah bata lumpur → menara bata → gedung kaca | — |
-| 7 | "Itu Jibril" | Cahaya meninggalkan pintu, naik ke langit | Sosok Jibril |
+| 7 | "Itu Jibril" | POV lagi: tempat di depan kamera kosong; cahaya terakhir terlihat keluar lewat pintu lalu naik ke langit | Sosok Jibril, Nabi ﷺ |
 | 8 | Ibnu Hajar menjelaskan | Kota modern: orang-orang biasa di depan gedung yang saling susul naik | — |
 | 9 | Hadits "apa yang kamu siapkan" | Pemuda masa kini (karakter pembawa cerita) mendongak ke gedung, lalu menunduk melihat sajadah di tasnya | — |
 | 10 | Penutup | Gelap pelan-pelan; siluet gedung dan satu cahaya lampu masjid kecil di bawahnya | — |

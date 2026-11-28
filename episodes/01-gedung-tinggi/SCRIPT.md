@@ -1,4 +1,5 @@
 # Episode 1: Tanda kiamat yang bentuknya gedung tinggi — naskah v1 (2026-11-28)
+APPROVED: naskah disetujui pengguna 2026-11-28
 REVIEW: pending   <!-- diganti "reviewed by <nama ustadz>, <tanggal>" setelah pengguna mengonfirmasi -->
 Bahasa: ID (ragam santai, dicek bahasa-inti: KERAS 0, TINJAU 0) · Suara: TTS (ElevenLabs) · Latar suara: senandung vokal/drone, tanpa alat musik · Wiring: A (hybrid)
 Panjang: 210 kata ≈ 65-70 dtk (3,0-3,5 kata/dtk, melambat di kutipan hadits)

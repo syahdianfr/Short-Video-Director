@@ -13,7 +13,7 @@ Language: EN | ID        Sound bed: ambient (default) | vocal drone/nasheed     
 |---|---|---|
 | Hook | <place / object / ordinary person> | <prophet / companion → light, empty space, POV> |
 
-## Script (~2.8-3.2 words/s, 55-75 s)
+## Script (~3.0-3.5 words/s, register santai (bahasa-inti), 55-75 s)
 1. Hook: <one true, weighty fact or question>
 2. Setting: <year AH/CE, place, people>
 3. Story beat 1 … 3-4: <rising in meaning, not in silliness>

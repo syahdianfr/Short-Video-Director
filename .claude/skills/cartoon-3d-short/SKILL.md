@@ -5,7 +5,18 @@ description: Make a ~55-70 s vertical short for a serious Islamic series (Islami
 
 # Islamic series short: cartoon cards in a 3D world (three.js + HyperFrames)
 
-This is a serious, respectful series about Islam. The tone is reverent, calm and sincere. There is no comedy anywhere: no jokes, no irony, no slapstick, no "funny" props, no mocking characters, no punchlines.
+This is a respectful series about Islam, from its history to its knowledge (ilmu), made easy to digest for a young audience. The narration talks like a friend telling you a story over coffee ("ngobrol santai"), not like a lecture. The content stays respectful: no slapstick, no "funny" props, no mocking characters and no punchlines at anyone's expense.
+
+## Language register: casual storytelling, not gossip (agreed with the user)
+- The register is "santai/akrab" (relaxed, between friends), as defined by the `bahasa-inti` skill. Write and check every Indonesian script with `bahasa-inti` at register `santai` (run `scripts/periksa.py --ragam santai`).
+- Allowed: short sentences, direct address ("kamu"), conversational words (*nggak, banget, gimana, sih, dong, jadi gini*), questions to the viewer ("Tau nggak sih …?"), and a warm, curious tone. Spelling is still correct; conversational is not careless.
+- Gossip-style openers are allowed only as framing for a true, sourced fact ("Eh, tau nggak sih, ada satu kota yang …"). The content is never gossip:
+  - No ghibah. Never dwell on anyone's faults, private life or scandals, historical or living.
+  - Never use a gossip tone about the prophets, the Prophet's family or the companions. Never "spill the tea" about the disputes between companions (the fitnah era). Leave those topics out of this series.
+  - No "katanya …" (hearsay). Every story must have a source in the facts block; a weak narration is not told as true.
+- Sacred names are never slang. Say "Allah", "Nabi Muhammad ﷺ" (spoken "shallallahu 'alaihi wa sallam" or "sallallahu alaihi wasallam" per series), "Nabi Musa 'alaihissalam" and so on, never a nickname or a joke name.
+- The register shifts when the sacred appears: the ayah or hadith in the Reflection beat is said slowly and seriously, then the narrator returns to the casual tone for the Lesson.
+- Use `ansari` to look up and cross-check sources while researching. Its answers are an aid, not a fatwa; they still go into the facts block with the original reference and through the ustadz review.
 
 Technical base: the look engine from the original "bridge" short (`templates/bridge/`). Only its look values and code are reused; its comedic script formula is retired. The study material in `references/` is for the look only.
 - The reference frames are private study material. Never upload, publish or send them, and never copy their scripts, characters or shots.
@@ -54,15 +65,15 @@ Show them through their presence instead:
 ## Series rules
 - No captions or labels on screen, except correct diegetic text and an optional Qur'an verse reference card.
 - The voice-over language is set per series at intake (English or Bahasa Indonesia). Arabic terms keep a consistent transliteration.
-- Voice: one calm, steady, sincere tone. Slower than the original style: ~2.8-3.2 words/s, with breathing room after an ayah or hadith.
+- Voice: one warm, relaxed, storytelling tone, like talking to a friend. ~3.0-3.5 words/s, slowing down with breathing room around an ayah or hadith.
 - Standard mix (no instruments): voice unchanged, ambient bed -18 dB under the voice, SFX -8 dB with peaks capped. If the user picks the vocal nasheed or drone bed, it sits at -12 dB, and the duck goes to full silence under any recitation.
 - Final export 2K vertical: 1440x2560.
 - Verify every look check with an agent, and save after every step.
 - "Just do it" applies only once the script is approved AND marked as reviewed.
 
 ## Script formula (replaces the old comedic formula)
-~2.8-3.2 words/s, 55-75 s, 160-220 words.
-1. **Hook (sentence 1).** A striking, true fact or question with real weight, with no exaggeration or joke. Example shape: "For three hundred years, scholars in one city translated almost every book they could find."
+~3.0-3.5 words/s, 55-75 s, 170-240 words.
+1. **Hook (sentence 1).** A striking, true fact asked or told casually, with no exaggeration. Example shape: "Tau nggak sih, ada satu kota yang selama ratusan tahun nerjemahin hampir semua buku yang bisa mereka temuin?"
 2. **Setting.** Year (Hijri and CE), place and the people involved, described with concrete true details.
 3. **Story, in 3-4 rising beats.** What happened, each beat a little more significant. The beats rise in stakes or meaning, never in silliness.
 4. **Turning point.** The decisive moment: a choice, a test, a revelation, a loss or a victory.

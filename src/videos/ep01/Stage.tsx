@@ -79,6 +79,22 @@ class Host {
     this.grain.seed = f;
     this.composer.render();
   }
+  /** free every GPU resource of this layer. Without this, each crossfade's "over" layer leaked a whole 2K
+   *  renderer + composer; after a few hundred frames in one tab SwiftShader ran out and textures sampled black. */
+  dispose() {
+    this.scene.traverse((o) => {
+      const m = o as THREE.Mesh;
+      m.geometry?.dispose();
+      const mats = Array.isArray(m.material) ? m.material : m.material ? [m.material] : [];
+      for (const mat of mats) {
+        for (const v of Object.values(mat)) if (v instanceof THREE.Texture) v.dispose();
+        mat.dispose();
+      }
+    });
+    this.composer.dispose();
+    this.renderer.dispose();
+    this.renderer.forceContextLoss();
+  }
 }
 
 /** one full-frame layer; `make` builds the world once (it may be async: assets) */
@@ -88,6 +104,7 @@ export const StageLayer: React.FC<{ make: () => Promise<HostedWorld>; alpha?: nu
   const ref = useRef<HTMLCanvasElement>(null);
   const host = useRef<Host | null>(null);
   const ready = useMemo(() => ({ p: null as Promise<HostedWorld> | null }), []);
+  useLayoutEffect(() => () => { host.current?.dispose(); host.current = null; }, []);
   useLayoutEffect(() => {
     const h = delayRender("stage frame " + f);
     let alive = true;

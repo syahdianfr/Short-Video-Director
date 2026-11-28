@@ -136,7 +136,8 @@ def bleat(dur, seed, f0=470.0):
     return bp(vox(f, forms, a, rr, tilt=1.3, breath=0.25, fmax=5000), 250, 6000)
 
 
-for tb, seed, f0, p, g in [(2.3, 1, 480, -0.4, 0.6), (4.7, 2, 430, 0.5, 0.45), (39.8, 3, 500, -0.3, 0.7), (41.2, 4, 450, 0.4, 0.55), (52.4, 5, 470, -0.5, 0.5)]:
+# no bleat in the opening: the Prophet ﷺ is named there and no goats are on screen
+for tb, seed, f0, p, g in [(39.8, 3, 500, -0.3, 0.7), (41.2, 4, 450, 0.4, 0.55), (52.4, 5, 470, -0.5, 0.5)]:
     place(sfx["goats"], pan(fades(bleat(0.75, seed, f0), 0.01, 0.1), p), tb, g)
 
 # the companions: a soft murmur without words over the courtyard (they hush when the stranger comes); a short swell

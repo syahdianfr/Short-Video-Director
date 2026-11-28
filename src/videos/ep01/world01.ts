@@ -149,12 +149,10 @@ const SH: V3 = [0, 0, 0];
 // be taken for him; the shepherd's face first appears on "Engkau akan melihat orang-orang...", and the young man only on
 // "Apa yang sudah kamu siapkan" (the "kamu" is the viewer), never during "ada orang yang nanya langsung ke Nabi ﷺ".
 const DEFS: Omit<ShotDef, "id">[] = [
-  // 0.00-3.37  "Empat belas abad lalu, Nabi Muhammad ﷺ menyebut"  the empty desert, wind over the dunes (nobody shown)
-  { a: 0, b: 101, place: "desert", light: DESERT_DAY, sky: "goegap", grade: "day", goats: "none",
-    cam: keys([[0, [7, 2.4, 18], [0, 1.4, -40], 44], [101, [5.2, 1.9, 13.5], [0, 1.2, -40], 44]]), dof: { cInf: 0 } },
-  // 3.37-5.73  "satu tanda kiamat yang bentuknya..."  bare feet on the sand among the goats (no face)
-  { a: 101, b: 172, place: "desert", light: DESERT_DAY, sky: "goegap", grade: "day", goats: "graze", shepherd: SH, xf: 8,
-    cam: keys([[101, [0.62, 0.3, 1.35], [0.05, 0.15, 0], 36], [172, [0.7, 0.33, 1.55], [0.05, 0.2, 0], 36]]), dof: { cInf: 10, focus: () => [0, 0.12, 0] } },
+  // 0.00-5.73  "Empat belas abad lalu, Nabi Muhammad ﷺ menyebut satu tanda kiamat yang bentuknya..."  the empty desert,
+  // wind over the dunes, nobody shown; the name of the Prophet ﷺ appears only as Arabic calligraphy (Episode01.tsx)
+  { a: 0, b: 172, place: "desert", light: DESERT_DAY, sky: "goegap", grade: "day", goats: "none",
+    cam: keys([[0, [7, 2.4, 18], [0, 1.4, -40], 44], [172, [4.6, 1.7, 11.5], [0, 1.6, -40], 44]]), dof: { cInf: 0 } },
   // 5.73-6.87  "gedung tinggi"  towers through the clouds, seen from the sand
   { a: 172, b: 206, place: "desert", light: DESERT_DAY, sky: "goegap", grade: "day", towers: "far", goats: "none",
     cam: keys([[172, [0, 0.8, 8], [0, 150, -300], 52], [206, [0, 0.8, 6], [0, 160, -300], 50]]), dof: { cInf: 0 } },

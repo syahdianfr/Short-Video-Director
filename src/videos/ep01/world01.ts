@@ -108,14 +108,26 @@ export const SHOTS: ShotDef[] = [
   // 4 (check only): goats seen side-on, close, sharp
   { id: 4, a: 270, b: 300, set: "desert", light: DESERT_DAY, grade: "day", cInf: 0,
     cam: () => ({ pos: [-0.6, 0.9, 1.6], look: [-0.6, 0.55, -2.2], fov: 40 }) },
+  // 5 (motion test, 4 s): one continuous POV take. The doorway fills with light, the light crosses the courtyard and
+  // comes into the shade of the portico, and the seated gaze lowers with it until it rests right in front.
+  { id: 5, a: 300, b: 420, set: "mosque", light: MOSQUE_DAY, grade: "day", cInf: 0,
+    cam: (f) => { const u = smooth((f - 338) / 70); return { pos: POV, look: lerp3([1.3, 1.65, 14], [0.9, 0.45, -6.5], u), fov: 58 }; } },
 ];
 export const TOTAL = SHOTS[SHOTS.length - 1].b;
 export const shotAt = (f: number) => SHOTS.find((s) => f >= s.a && f < s.b) ?? SHOTS[SHOTS.length - 1];
 
 /** where Jibril's light is at frame f (shots 2-3): from the north door across the courtyard to the seated place */
-const lightPath = (f: number): V3 => {
-  if (f < 180) { const u = smooth((f - 100) / 80); return lerp3([1.5, 0, 14.4], [1.5, 0, 11.5], u); }
-  return [0.9, 0, -8.6];
+/** Jibril's light at frame f: position on the floor, overall strength k, doorway glow, and whether it is under the
+ *  portico (near: pool + shafts) or still out in the courtyard / at the door (long spill of light) */
+const jibAt = (f: number, id: number) => {
+  if (id === 5) {
+    const k = smooth((f - 300) / 22), w = smooth((f - 326) / 76);
+    const p = lerp3([1.5, 0, 14.0], [0.9, 0, -8.6], w);
+    return { p, k, door: k * (1 - smooth((f - 340) / 30)), near: p[2] < -5.5, shaft: smooth((-5.5 - p[2]) / 2.5) };
+  }
+  if (id === 3) return { p: [0.9, 0, -8.6] as V3, k: smooth((f - 96) / 30), door: 0, near: true, shaft: 1 };
+  const u = smooth((f - 100) / 80);
+  return { p: lerp3([1.5, 0, 14.4], [1.5, 0, 11.5], u), k: smooth((f - 96) / 30), door: smooth((f - 96) / 30), near: false, shaft: 0 };
 };
 
 // ---------------- characters ----------------
@@ -349,17 +361,19 @@ class Ep01World {
     const on = s.set === "mosque";
     for (const m of [this.jib.pool, this.jib.door, ...this.jib.shafts]) m.visible = on;
     if (on) {
-      const k = smooth((f - 96) / 30), p = lightPath(f), near = s.id === 3;
-      // doorway glows as he enters (shot 2), fades once he is inside
-      this.jib.door.visible = !near; (this.jib.door.material as THREE.MeshBasicMaterial).opacity = k;
-      // pool: under him when near; at the door it spills into the courtyard toward the camera
-      if (near) { this.jib.pool.position.set(p[0], 0.02, p[2]); this.jib.pool.scale.set(1.5 * k, 1, 1.7 * k); }
-      else { this.jib.pool.position.set(p[0], 0.02, p[2] - 1.6); this.jib.pool.scale.set(2.6 * k, 1, 6 * k); }
+      const J = jibAt(f, s.id), k = J.k, p = J.p, near = J.near;
+      // doorway glows as he enters, fades once he is inside
+      this.jib.door.visible = J.door > 0.001; (this.jib.door.material as THREE.MeshBasicMaterial).opacity = J.door;
+      // pool: under him when near; at the door / crossing the courtyard it is a long spill toward the camera
+      // n: 0 = long spill (door / courtyard) .. 1 = compact pool under the portico, blended (no pop at the threshold)
+      const sp = s.id === 5 ? 1.6 : 1, n = s.id === 3 ? 1 : s.id === 5 ? smooth((-2.5 - p[2]) / 4) : 0;
+      this.jib.pool.position.set(p[0], 0.02, p[2] - 1.6 * sp * (1 - n));
+      this.jib.pool.scale.set(k * THREE.MathUtils.lerp(2.6 / sp, 1.5, n), 1, k * THREE.MathUtils.lerp(6 / sp, 1.7, n));
       const yaw = Math.atan2(cam.position.x - p[0], cam.position.z - p[2]);
       this.jib.shafts.forEach((m, i) => {
         m.position.set(p[0] + m.userData.dx * Math.cos(yaw), 0, p[2] - m.userData.dx * Math.sin(yaw) + m.userData.dz);
         m.rotation.set(0, yaw, 0);
-        m.visible = near; (m.material as THREE.MeshBasicMaterial).opacity = k * (0.6 + 0.4 * Math.sin(t * 1.3 + i * 1.7) ** 2);
+        m.visible = J.shaft > 0.001; (m.material as THREE.MeshBasicMaterial).opacity = J.shaft * k * (0.6 + 0.4 * Math.sin(t * 1.3 + i * 1.7) ** 2);
       });
       this.jib.light.position.set(p[0], 0.6, p[2]); this.jib.light.intensity = (near ? 3 : 5) * k;
       (this.dust.material as THREE.PointsMaterial).opacity = 0.35 + 0.3 * Math.sin(t * 0.7) ** 2;

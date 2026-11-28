@@ -105,6 +105,9 @@ export const SHOTS: ShotDef[] = [
   // 3: POV: the light has come close and settled right in front of the seated place
   { id: 3, a: 180, b: 270, set: "mosque", light: MOSQUE_DAY, grade: "day", cInf: 8, focus: [0.9, 0.95, -8.7],
     cam: (f) => { const u = smooth((f - 180) / 90); return { pos: lerp3(POV, [0.9, 1.05, -10.35], u), look: [0.9, 1.0, -6], fov: 58 }; } },
+  // 4 (check only): goats seen side-on, close, sharp
+  { id: 4, a: 270, b: 300, set: "desert", light: DESERT_DAY, grade: "day", cInf: 0,
+    cam: () => ({ pos: [-0.6, 0.9, 1.6], look: [-0.6, 0.55, -2.2], fov: 40 }) },
 ];
 export const TOTAL = SHOTS[SHOTS.length - 1].b;
 export const shotAt = (f: number) => SHOTS.find((s) => f >= s.a && f < s.b) ?? SHOTS[SHOTS.length - 1];

@@ -412,6 +412,18 @@ const hatOn = (p: Pen, o: Outfit, hp: P2[], H: Blob, cx: number, hc: number, lig
     p.poly(body, null, ow);
     const [bx, by] = R([[cx, yb + 1 * u]])[0];
     p.ell(bx, by, 0.45 * W, 0.05 * HH, "#1d1b22", ow, 0, 360, (a * 180) / Math.PI);
+  } else if (o.hat === "imama") {
+    // ep01: a wrapped cloth turban (imama) sitting on the crown, a little wider than the head, with wrap folds
+    const col = o.cap ?? "#efe6d2";
+    const wrap = R(blobPts(cx + (side ? -4 * u : 0), crown + 0.1 * HH, { a: H.a * 1.06, b: 0.27 * HH, nTop: 2.1, nBot: 2.8, egg: -0.08, asym: 0, rot: 0, noise: 0.012, seed: seed + 31 }));
+    p.shadedFill(wrap, col, mul(col, SH_CLOTH), light, H.a, 0.35);
+    p.clip(wrap, () => {
+      for (let i = 0; i < 3; i++) {
+        const y0 = crown - 0.1 * HH + i * 0.13 * HH;
+        p.stroke(R([[cx - 1.1 * H.a, y0 + 0.12 * HH], [cx, y0 + 0.02 * HH], [cx + 1.1 * H.a, y0 - 0.1 * HH]]), 1.6 * u, mul(col, [0.72, 0.7, 0.74]));
+      }
+    });
+    p.poly(wrap, null, ow);
   } else if (o.hat === "bonnet") {
     const [bx, by] = R([[cx + (side ? 6 * u : 0), crown + 0.16 * HH]])[0];
     p.arc(bx, by, 0.5 * W, 0.2 * HH, 200, 340, 7 * u, BONNET_BRIM);

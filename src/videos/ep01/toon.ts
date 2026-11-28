@@ -347,6 +347,13 @@ const faceSide = (p: Pen, hx: number, hy: number, W: number, expr: Expr, lid: nu
 const BONNET = "#e9cf8f", BONNET_BRIM = "#d6b46a";
 /** parts of a hat that sit behind the head (bonnet) */
 const hatBehind = (p: Pen, o: Outfit, H: Blob, cx: number, hc: number, light: number, thick: number, ow: number, side: boolean) => {
+  if (o.hat === "hijab") { // ep01: the cloth behind and around the head, falling to the shoulders
+    const col = o.cap ?? "#5a6f8a";
+    const bb = blobPts(cx - (side ? 8 : 0) * (H.a / 50), hc + 0.16 * 2 * H.b, { ...H, a: H.a * 1.2, b: H.b * 1.32, nTop: 2.0, nBot: 2.4, asym: 0, egg: -0.1, seed: H.seed + 5 });
+    p.shadedFill(bb, col, mul(col, SH_CLOTH), light, H.a * 1.2);
+    p.inkRing(bb, ow * 0.85, thick);
+    return;
+  }
   if (o.hat !== "bonnet") return;
   const bb = blobPts(cx - (side ? 12 : 0) * (H.a / 50), hc - 0.07 * 2 * H.b, { ...H, a: H.a * 1.17, b: H.b * 1.13, asym: 0, egg: 0.04, seed: H.seed + 3 });
   p.shadedFill(bb, BONNET, mul(BONNET, SH_CLOTH), light, H.a * 1.17);
@@ -417,6 +424,18 @@ const hatOn = (p: Pen, o: Outfit, hp: P2[], H: Blob, cx: number, hc: number, lig
     p.poly(body, null, ow);
     const [bx, by] = R([[cx, yb + 1 * u]])[0];
     p.ell(bx, by, 0.45 * W, 0.05 * HH, "#1d1b22", ow, 0, 360, (a * 180) / Math.PI);
+  } else if (o.hat === "hijab") {
+    // ep01: the hijab frames the face: a band over the hair down to the forehead, and the cloth along both cheeks
+    const col = o.cap ?? "#5a6f8a", cut = crown + 0.3 * HH;
+    const n = hp.length, keep = (x: number, y: number) => y < cut;
+    const startIdx = Math.max(0, hp.findIndex(([x, y], i) => keep(x, y) && !keep(hp[(i + n - 1) % n][0], hp[(i + n - 1) % n][1])));
+    const arc = [...hp.slice(startIdx), ...hp.slice(0, startIdx)].filter(([x, y]) => keep(x, y)).map(([x, y]) => [cx + (x - cx) * 1.06, hc + (y - hc) * 1.06] as P2);
+    if (arc.length >= 3) { p.shadedFill(arc, col, mul(col, SH_CLOTH), light, H.a, 0.35); p.poly(arc, null, ow); }
+    if (!side) for (const sd of [-1, 1]) {
+      const cheek: P2[] = [[cx + sd * 0.84 * H.a, cut - 6 * u], [cx + sd * 1.1 * H.a, cut], [cx + sd * 1.08 * H.a, hc + 0.75 * H.b], [cx + sd * 0.55 * H.a, hc + 1.12 * H.b],
+        [cx + sd * 0.62 * H.a, hc + 0.92 * H.b], [cx + sd * 0.86 * H.a, hc + 0.45 * H.b]];
+      p.shadedFill(cheek, col, mul(col, SH_CLOTH), light, H.a, 0.35); p.poly(cheek, null, ow * 0.9);
+    }
   } else if (o.hat === "imama") {
     // ep01: a wrapped cloth turban (imama) sitting on the crown, a little wider than the head, with wrap folds
     const col = o.cap ?? "#efe6d2";

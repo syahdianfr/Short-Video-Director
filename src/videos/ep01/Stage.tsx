@@ -16,11 +16,11 @@ import { GradeEffect, GRADES, GRADE_STRENGTH, gradeFor } from "./grade";
 export interface HostedWorld {
   root: THREE.Object3D;
   /** pose everything for frame f; returns the camera's look target (default focus point) */
-  update(f: number, cam: THREE.PerspectiveCamera, scene: THREE.Scene): THREE.Vector3;
+  update(f: number, cam: THREE.PerspectiveCamera, scene: THREE.Scene, shot?: number): THREE.Vector3;
   /** lens blur for frame f: cInf in px at 1080 wide (0 = sharp) and an optional focus point */
-  dof(f: number): { cInf: number; focus?: THREE.Vector3 };
+  dof(f: number, shot?: number): { cInf: number; focus?: THREE.Vector3 };
   /** colour grade family for frame f */
-  grade(f: number): "day" | "golden";
+  grade(f: number, shot?: number): "day" | "golden";
 }
 
 type PostToggles = { ink: boolean; lens: boolean; pre: boolean; bloom: boolean; grade: boolean; grain: boolean };
@@ -67,22 +67,22 @@ class Host {
     this.composer.addPass(new EffectPass(this.cam, ...tail));
     this.composer.setSize(w, h, false);
   }
-  draw(f: number) {
-    const target = this.world.update(f, this.cam, this.scene);
+  draw(f: number, shot?: number) {
+    const target = this.world.update(f, this.cam, this.scene, shot);
     noInkFallback(this.world.root);
-    const d = this.world.dof(f);
+    const d = this.world.dof(f, shot);
     this.cam.getWorldDirection(this.fwd);
     this.fpt.copy(d.focus ?? target);
     this.lens.focus = Math.max(0.3, this.fpt.sub(this.cam.position).dot(this.fwd));
     this.lens.cInf = d.cInf;
-    gradeFor(this.grade, this.world.grade(f));
+    gradeFor(this.grade, this.world.grade(f, shot));
     this.grain.seed = f;
     this.composer.render();
   }
 }
 
 /** one full-frame layer; `make` builds the world once (it may be async: assets) */
-export const StageLayer: React.FC<{ make: () => Promise<HostedWorld>; alpha?: number }> = ({ make, alpha = 1 }) => {
+export const StageLayer: React.FC<{ make: () => Promise<HostedWorld>; alpha?: number; shot?: number }> = ({ make, alpha = 1, shot }) => {
   const f = useCurrentFrame();
   const { width, height } = useVideoConfig();
   const ref = useRef<HTMLCanvasElement>(null);
@@ -94,11 +94,11 @@ export const StageLayer: React.FC<{ make: () => Promise<HostedWorld>; alpha?: nu
     (ready.p ??= make()).then((world) => {
       if (!alive) return;
       if (!host.current) host.current = new Host(ref.current!, width, height, world);
-      host.current.draw(f);
+      host.current.draw(f, shot);
       continueRender(h);
     }).catch((e) => { console.error(e); throw e; });
     return () => { alive = false; continueRender(h); };
-  }, [f, width, height, make, ready]);
+  }, [f, width, height, make, ready, shot]);
   return (
     <AbsoluteFill style={{ opacity: alpha }}>
       <canvas ref={ref} width={width} height={height} style={{ width: "100%", height: "100%" }} />

@@ -16,3 +16,4 @@ public/*/models/
 
 # rebuilt by tools/audio_ep01.py
 public/ep01/mix.wav
+__pycache__/

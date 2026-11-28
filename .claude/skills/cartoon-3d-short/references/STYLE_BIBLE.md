@@ -9,12 +9,12 @@ Private study only. Videos: vids/ (720p, original EN audio), transcripts: tx/, p
 - Captions: one word (sometimes 2-3) at a time, white bold sans, thin black outline, lower-middle, hard swaps on each word.
   (OUR RULE: no captions unless the user asks.)
 
-## Script formula (20/20 follow it)
+## Script formula of the reference (COMEDIC, RETIRED for the Islamic series; use the formula in SKILL.md)
+Kept only as a record of pacing. Do not reuse its jokes, mockery, ironic payoffs or "You see," quip structure.
 1. **Hook = paradox stated as fact, sentence 1, no setup.** A person did something that sounds dumb/impossible with stakes,
    or "If you X, you'd Y", or "X is illegal, yet ...". ~10-16 words.
 2. **Setting in 1-2 lines**, present tense, concrete details (time of day, a named everyman, numbers).
 3. **Escalation, 3-6 beats**: others laugh / doubt / mock (short in-character dialogue lines), stakes climb.
-   1-2 exaggeration jokes per video (claim vs reality, "so slow X, and X was ...").
 4. **Mystery beat**: a question or "Wait, ...?" (~1 per video).
 5. **Pivot word "You see,"** (14 of 20 videos) → the real mechanism. Often an everyday analogy
    ("Ever ...?", "think about the last time ...", "picture your body as ...").
@@ -29,7 +29,7 @@ Private study only. Videos: vids/ (720p, original EN audio), transcripts: tx/, p
 - Characters receive scene light/shadow (they are lit, not pure emission), cast ground shadows.
 - Color stats (per video median): lum mean 0.43-0.54, lum std 0.21-0.29, p2 0.03-0.11 (deep darks), p98 0.9-1.0,
   saturation 0.38-0.65 (very saturated). Lighting changes with story beats (noon -> sunset -> night-blue for the explanation).
-- Every sentence is illustrated literally; props carry the joke (beers, frogs, milk cart).
+- Every sentence is illustrated literally (Islamic series: with places, objects, light and allowed people, never forbidden figures; no comic props, no alcohol).
 
 ## Camera / editing (measured)
 - **Hard cuts almost never**: 0-1 per video in 12/20 videos; most "cuts" detected are 4-frame flash effects.
@@ -40,5 +40,5 @@ Private study only. Videos: vids/ (720p, original EN audio), transcripts: tx/, p
 - Slow push-ins during holds; low camera heights; frequent dutch tilts for drama/falls.
 
 ## Effects
-- Muzzle fire, glow/aura bursts, sparkles on impact, splash sprites, speed lines, dust puffs, music notes, stars,
+- Muzzle fire, glow/aura bursts, sparkles on impact, splash sprites, speed lines, dust puffs, stars (Islamic series: no music notes, no comic sparkles; keep dust, light shafts, glow from lamps),
   light shafts; all flat 2D cartoon sprites composited into the 3D scene.

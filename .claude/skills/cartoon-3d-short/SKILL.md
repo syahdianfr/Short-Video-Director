@@ -1,83 +1,129 @@
 ---
 name: cartoon-3d-short
-description: Make a ~55-70 s vertical cartoon story short in the "2D characters in a colourful 3D world" style (flat bean-head cartoon cards with ink outlines, painted 3D town/world with black ink lines, saturated sky, depth-of-field backgrounds, gliding cameras, voice narration, synthesized SFX + march-style music), rendered with three.js inside Remotion. Proven on "The Bridge That Fell for a Song" (2026-10-31). Use when the user asks for another video "like the bridge video", "like the soldiers/bridge short", "in that cartoon 3D style", a history/science story short with cartoon characters in 3D, or says "use the cartoon short skill".
+description: Make a ~55-70 s vertical short for a serious Islamic series (Islamic history, sirah context, the lives of ordinary believers, Islamic civilisation and science) in the "2D characters in a colourful 3D world" style. Flat bean-head cartoon cards with ink outlines sit in a painted 3D world with black ink lines, depth of field and gliding cameras, with calm narration and a sound bed without comedy. The 3D world, camera and lighting are three.js; HyperFrames assembles, edits, finishes and renders. Use for any episode of the Islamic series, "an Islamic story short", "in that cartoon 3D style", or "use the cartoon short skill".
 ---
 
-# Cartoon 3D story short (three.js + Remotion)
+# Islamic series short: cartoon cards in a 3D world (three.js + HyperFrames)
 
-Proven example: **The Bridge That Fell for a Song**. It is an original 67 s short about the 1831 Broughton bridge and 74 soldiers marching in step.
-- Code: `src/videos/bridge/` of your Remotion project (composition `BridgeShort`, 1080x1920, 30 fps).
-- Script, voice and sound: `~/bridge-short/`.
-- Style research: `references/`.
+This is a serious, respectful series about Islam. The tone is reverent, calm and sincere. There is no comedy anywhere: no jokes, no irony, no slapstick, no "funny" props, no mocking characters, no punchlines.
 
-The style reference is a channel studied privately (`references/`: STYLE_BIBLE.md, reports/*.md, frames/).
-- Those videos are private study material. Never upload, publish or send them.
-- Never copy their scripts, characters or shots. Story, characters and voice are always OUR OWN.
-- Never say the channel's name in a voice-over or description.
+Technical base: the look engine from the original "bridge" short (`templates/bridge/`). Only its look values and code are reused; its comedic script formula is retired. The study material in `references/` is for the look only.
+- The reference frames are private study material. Never upload, publish or send them, and never copy their scripts, characters or shots.
+- Never say the reference channel's name anywhere.
 
-User rules that apply:
-- No captions or labels in the video.
-- English only.
-- Voice: one steady tone.
-- Jokes are researched real facts.
-- Standard mix: music +3 dB, SFX -6 dB, voice unchanged.
-- Final export 2K vertical: 1440x2560, `--scale 1.3333`.
-- Opus max verifies every check.
-- Save after every step.
-- "Just do it" once the script is approved.
+## Adab and accuracy rules (these override everything else in this file)
+**Never depict as a figure, face, silhouette, card or body:**
+- Allah, in any form, and no symbol standing in for Him.
+- Any prophet or messenger, e.g. Muhammad ﷺ, Ibrahim, Musa, 'Isa, Yusuf or Nuh (peace be upon them).
+- The Prophet's wives and his family (Ahl al-Bayt).
+- The companions (sahabah). This is the conservative default, and it covers the four caliphs, the ten promised Paradise and every named companion.
+- Angels, the jinn and Iblis.
+
+Show them through their presence instead:
+- Warm light falling into a room, an empty spot in a row, an open door, a camel led by a rope whose holder stays out of frame.
+- Footprints in sand, a staff, a shadow that never resolves into a body, the reactions of ordinary people, or a point-of-view camera.
+- Never a glowing human outline. That is still a depiction.
+
+**Who may be a character card:** only ordinary, unnamed people (a merchant, a traveller, a student, a farmer) and later historical figures who are not companions (scholars, builders, scientists), if the user approves each one.
+- Characters dress modestly and plausibly for their period. Women wear hijab and loose clothing. No exposed awrah.
+- No romance scenes, no music-playing characters and no alcohol.
+- Expressions are dignified. Grief, awe, gratitude, determination and concentration are fine. Laughing is not, and neither are mocking faces, smug faces or exaggerated gags.
+
+**Sacred things:**
+- Draw the Ka'bah, Masjid al-Haram and Masjid an-Nabawi accurately for the period shown, or not at all. Never use them as a backdrop gag, and never let a camera "fly through" the Ka'bah.
+- Show Qur'an text only as correct Arabic: right to left, properly shaped (pre-render it as an image with a shaping-aware renderer; Canvas2D `fillText` may break the joins), and with no letter, vowel mark or word missing.
+- Never put Qur'an or Allah's name on floors, feet, shoes, rubbish or anything that gets stepped on, torn or burned on screen.
+- Never animate Qur'an text with bouncy or playful effects. A slow fade or light is fine.
+
+**Sources:**
+- Every claim comes from the Qur'an (surah:ayah), an authentic hadith (collection + number + grade, e.g. Sahih al-Bukhari 1, sahih), or a recognised history (al-Tabari, Ibn Kathir's al-Bidayah, Ibn Hisham's Sirah, or a modern academic source).
+- Write each one into the facts block of `SCRIPT.md`.
+- Do not present a weak (da'if) or fabricated (mawdu') narration as fact. If a famous story is weak, say so or leave it out.
+- If the scholars disagree on a point, say "according to …" or choose another story.
+- Translations of the Qur'an are marked as the meaning ("which means …"), never as the Qur'an itself. Name the translation used, e.g. Sahih International.
+- Honorifics: say "peace be upon him" after the Prophet's name every time, and write ﷺ in the script. Say "peace be upon him" after the other prophets too. "May Allah be pleased with him/her" for companions is optional, set per series.
+- Before publishing, the script must be reviewed by a qualified teacher (ustadz). The skill marks every script `REVIEW: pending` until the user confirms the review.
+
+**Sound:**
+- No musical instruments by default: no march, drums, strings or synth melody. This follows the many scholars who disallow instruments and the audience who expects it.
+- The default bed is a quiet ambient tone (wind, room tone, desert air, a city murmur) plus diegetic SFX.
+- Voice-only nasheed-style humming or a soft drone is allowed only if the user chooses it. Ask once at intake.
+- A Qur'an recitation clip is never cut mid-ayah, never time-stretched or pitch-shifted, and never has music or SFX under it. Duck the bed to silence for it. Use a recitation clip only if its licence allows it.
+- The adhan is never used as a sound effect or a transition sting.
+
+## Series rules
+- No captions or labels on screen, except correct diegetic text and an optional Qur'an verse reference card.
+- The voice-over language is set per series at intake (English or Bahasa Indonesia). Arabic terms keep a consistent transliteration.
+- Voice: one calm, steady, sincere tone. Slower than the original style: ~2.8-3.2 words/s, with breathing room after an ayah or hadith.
+- Standard mix (no instruments): voice unchanged, ambient bed -18 dB under the voice, SFX -8 dB with peaks capped. If the user picks the vocal nasheed or drone bed, it sits at -12 dB, and the duck goes to full silence under any recitation.
+- Final export 2K vertical: 1440x2560.
+- Verify every look check with an agent, and save after every step.
+- "Just do it" applies only once the script is approved AND marked as reviewed.
+
+## Script formula (replaces the old comedic formula)
+~2.8-3.2 words/s, 55-75 s, 160-220 words.
+1. **Hook (sentence 1).** A striking, true fact or question with real weight, with no exaggeration or joke. Example shape: "For three hundred years, scholars in one city translated almost every book they could find."
+2. **Setting.** Year (Hijri and CE), place and the people involved, described with concrete true details.
+3. **Story, in 3-4 rising beats.** What happened, each beat a little more significant. The beats rise in stakes or meaning, never in silliness.
+4. **Turning point.** The decisive moment: a choice, a test, a revelation, a loss or a victory.
+5. **Reflection.** One ayah or authentic hadith that speaks to it, quoted by meaning with its reference.
+   - If a concept needs explaining (a law of inheritance, how a qanat brings water), use one plain everyday analogy. It is respectful, not cute.
+6. **Lesson (ibrah).** What it teaches a believer today, in 1-2 sentences. Not preachy, and never a punchline.
+7. **Closing.** A calm last line that echoes the hook, or a short du'a or reminder. The video ends on the last word, with no CTA.
+
+Never describe on screen what the viewer already sees. Retired beats from the old formula, never to be used: "Luckily / Unluckily", "these guys think it's hilarious", ironic twists, exaggeration jokes, characters laughing at or mocking someone, and "props that carry the joke".
 
 ## Pipeline
-1. **Topic and facts.** Pick one surprising true story with a physical cause and effect (it should be visual), plus a simple everyday analogy that explains it.
-   - Write the facts with their source at the top of `SCRIPT.md`.
-2. **Script** (~3.7 words/s, 55-70 s). Beat formula from the bridge short:
-   - **Hook:** the absurd fact in one line ("Seventy-four soldiers knocked down an iron bridge just by walking across it.").
-   - **Setting:** year, place, pride.
-   - **Action:** escalation over three or four beats, each a little bigger.
-   - **Snap:** the moment it breaks.
-   - **Deadpan double line:** "Luckily ... / Unluckily ...".
-   - **Explanation:** one physics idea through an everyday analogy (the kid on a swing).
-   - **Consequence:** the rule it created.
-   - **Callback twist:** the ending.
-   - Never describe on screen what the viewer already sees.
-3. **Voice.** Record or generate `voice.wav`, then make its word timings `words.json` (any speech-to-text with word times).
-   - Put them in the project folder, e.g. `~/bridge-short/voice/`.
-   - Hand-fix the word timings. Everything is timed to words.json.
-4. **Shot plan** in `story.ts`: copy `templates/bridge/` (the final bridge source, same as `src/videos/bridge/` of your Remotion project) to `src/videos/<name>/`, register a new composition next to `BridgeShort` in `src/Root.tsx`, and rename it.
-   - `SHOTS`: id, a/b frames, light day/golden, crowd mode, `tau` story time.
-   - `XFADE`: crossfades at place/time changes.
-   - `FLASH_AT`: a white flash after the hook.
-   - `CAMS`: per-shot keys `{f, dur?, cut?, s: f => {pos, look, fov, roll}}`.
-   - `KICKS`: impact flip-shakes.
-   - `DOF`/`dofAt`: lens blur per beat.
-   - `FOREGROUND`: near framing props.
+**Who owns what:**
+- **three.js** owns the 3D world, the camera and the lighting. These are code that runs inside the frame (`story.ts`, `lights.ts`, `world.ts`). No editor can relight a three.js scene from outside.
+- **HyperFrames** owns the timeline and edit (shot order, crossfades, holds), the finishing (registry transitions, light leaks, colour grade per beat, the verse card, film look), the audio placement and mix, and the final render.
+
+**Two ways to wire it**, decided once per series and recorded in `SCRIPT.md`:
+- **A. Hybrid (default, lower risk).** The existing Remotion + three.js project renders each shot as a clean ProRes or PNG sequence (`out/<name>/shots/<id>.mov`). A HyperFrames project in `hf/<name>/` places those shots on the timeline, adds transitions, grade, light, the verse card and audio, then renders the final file.
+  - Camera moves and lighting changes are made in `story.ts` and `lights.ts`, then the affected shots are re-rendered.
+  - HyperFrames camera blocks (push-in, drift) may add a 2D reframe on top.
+- **B. Full port.** Use `/remotion-to-hyperframes` to move the three.js scene into a HyperFrames composition. The scene draws from `e.detail.time` in an `hf-seek` listener (see `hyperframes/references/runtimes.md`), so camera and light keys run on the HyperFrames timeline directly.
+  - This is more work, and it must be verified frame by frame against the Remotion render first.
+
+**Steps:**
+1. **Intake.** Ask once for:
+   - the topic or the story;
+   - the language (EN/ID);
+   - the sound bed (ambient only, which is the default, or the vocal nasheed/drone);
+   - whether companions may be shown (default no);
+   - wiring A or B, if not yet set for the series.
+2. **Topic and sources.** Choose one true, well-sourced story that can be shown without depicting forbidden figures.
+   - Plan how each beat is shown before writing (presence, POV, ordinary people, places, objects).
+   - Write the facts block with full references at the top of `SCRIPT.md`.
+3. **Script** with the formula above. Add `REVIEW: pending` at the top.
+   - Present it to the user and wait for approval plus the review confirmation.
+4. **Voice.** Record or generate `voice.wav` (`/media-use` for TTS or a transcript), then make the word timings `words.json` and hand-fix them. Everything is timed to `words.json`.
+5. **Shot plan** in `story.ts`: copy `templates/bridge/` to `src/videos/<name>/`, register a new composition in `src/Root.tsx`, and rename it.
+   - `SHOTS`, `XFADE`, `CAMS`, `DOF`/`dofAt` and `FOREGROUND` are as described in "Final look values".
+   - Use `KICKS` (impact shakes) only for a real physical impact in the story (a wall falling, a battle), never for emphasis or comedy.
+   - Replace `FLASH_AT` with a soft light bloom or a 6-8 frame dissolve after the hook.
    - Every visual reaction lands 0-3 frames before its word.
-5. **World.**
-   - `lights.ts`: LIGHTS plus the LOOK sky/river/cloud palette per light.
-   - `shade.ts`: two-tone shading and `untone()`.
-   - `build.ts`: town, houses and Kenney CC0 kit props, recoloured, with sight-line culling of anything blocking a camera.
-   - `paint.ts`: HD Canvas2D painted textures with seams painted in as dark tints.
-   - `world.ts`: sky shader, fog = horizon colour, river, per-frame posing, sun frozen per shot and camera-relative.
-6. **Characters.**
-   - `toon.ts`: the Canvas2D `Pen` drawing API, 600x1000 design canvas, soles at y = 975, bean heads, stick limbs, plum variable-width outline, face library.
-   - `cast.ts`: camera-facing billboards, crowds, effect cards, blinks, walk cycles. All billboards go on the `NOINK` layer.
-   - `cardshade.ts`: cards lit by the scene light, no emissive.
-7. **Post** (`Bridge.tsx` + `ink.ts` + `lensblur.ts` + `grade.ts`).
+   - **Depiction check per shot:** list who is in frame. Any forbidden figure → re-plan the shot.
+6. **World.** Same files as before (`lights.ts`, `shade.ts`, `build.ts`, `paint.ts`, `world.ts`).
+   - The settings are Islamic and period-correct: mud-brick and palm-trunk Madinah, desert caravans, Andalusian courtyards, Baghdad markets, Ottoman domes, Nusantara mosques with tiered roofs.
+   - No flags or symbols from the wrong period.
+7. **Characters** (`toon.ts`, `cast.ts`, `cardshade.ts`). Only allowed people, modestly dressed.
+   - Remove or never use the laugh, smug and gag faces from the face library.
+   - Beards, turbans, keffiyeh, hijab and thobes must fit the period and region.
+8. **3D post** (`Bridge.tsx` + `ink.ts` + `lensblur.ts` + `grade.ts`) is unchanged.
    - Composer order: ink → lens pre → lens main → bloom → NEUTRAL tone map → grade (MSAA 4).
    - Every pixel parameter scales with output height / 1920.
-8. **Sound** (`~/bridge-short/audio/`: timeline.py, sfx_gen.py, sfx.py, music.py, instruments.py, dsp.py, mix.py).
-   - Event table → synthesized SFX plus an original score ducked under the voice.
-   - Output: mix.wav (48 kHz, exact length), stems and cues.md.
-   - Lock the picture's time constants before the sound is made. Any later timing change means re-running the sound.
-9. **Look checks.** Run `node scripts/bridge-stills.mjs out/<name>/x_ 100,400 0.5`.
-   - Set `BRIDGE_ENTRY=src/sandboxes/<n>/index.tsx` to render a sandbox copy.
-   - Make side-by-sides against reference frames with `python scripts/sbs_sheet.py out.jpg --ours ... --ref ...`.
-   - Send them to an Opus max verifier: 1-3 images, a ≤200-word verdict.
-10. **Final render.**
-    - `npx remotion render src/index.ts <Comp> out/<name>/video.mp4 --codec h264 --crf 16 --scale 1.3333`
-    - Mux with `-map 0:v:0 -map 1:a:0` (Remotion writes a silent audio track).
-    - QA: `python scripts/short_qa.py final.mp4 out/<name>/qa shots.json` checks every frame for black, white, frozen and pop frames, plus loudness and sheets.
-    - Fix anything it finds, then run a deep Opus audit.
-11. **Deliver.** SendUserFile the final mp4, update memory, write notes.
+9. **Sound** (`templates/audio/`: `timeline.py`, `sfx_gen.py`, `sfx.py`, `mix.py`, `dsp.py`).
+   - The event table gives synthesized diegetic SFX plus an ambient bed. `music.py` and `instruments.py` are NOT used unless the user picks the drone or nasheed bed. The march score is retired.
+   - With wiring A, HyperFrames places the voice, bed and SFX as `<audio>` (`hyperframes/references/sound.md`). `mix.py` checks the levels.
+   - Lock the picture's time constants before the sound is made.
+10. **Look checks.** `node scripts/bridge-stills.mjs out/<name>/x_ 100,400 0.5` gives the 3D stills, and `hyperframes` snapshot or review gives the edited frames. Side-by-sides go to a verifier agent: 1-3 images and a ≤200-word verdict.
+    - The verifier also checks adab: no forbidden figure, correct Arabic, modest dress, no comedy.
+11. **Final render.**
+    - Wiring A: render the shots from Remotion (`--scale 1.3333`, ProRes or `--crf 12`), then do the final render in HyperFrames at 1440x2560 (`/hyperframes-cli` render).
+    - Wiring B: render HyperFrames directly.
+    - QA: `python scripts/short_qa.py final.mp4 out/<name>/qa shots.json` checks every frame for black, white, frozen and pop frames, plus loudness. Fix anything it finds.
+12. **Deliver.** SendUserFile the final mp4, together with the sources list and the reviewed-script note.
 
 ## Final look values (bridge after 4 verifier rounds; all in `templates/bridge/`)
 Start every new short from `templates/bridge/` (copy to `src/videos/<name>/`): the look lives in these values, the

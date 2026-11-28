@@ -1,0 +1,156 @@
+[
+ {
+  "id": "goegap",
+  "kind": "hdri",
+  "res": "1k",
+  "source": "https://polyhaven.com/a/goegap",
+  "license": "CC0"
+ },
+ {
+  "id": "klippad_sunrise_2",
+  "kind": "hdri",
+  "res": "1k",
+  "source": "https://polyhaven.com/a/klippad_sunrise_2",
+  "license": "CC0"
+ },
+ {
+  "id": "qwantani_dusk_2_puresky",
+  "kind": "hdri",
+  "res": "1k",
+  "source": "https://polyhaven.com/a/qwantani_dusk_2_puresky",
+  "license": "CC0"
+ },
+ {
+  "id": "rogland_moonlit_night",
+  "kind": "hdri",
+  "res": "1k",
+  "source": "https://polyhaven.com/a/rogland_moonlit_night",
+  "license": "CC0"
+ },
+ {
+  "id": "sand_01",
+  "kind": "tex",
+  "res": "1k",
+  "source": "https://polyhaven.com/a/sand_01",
+  "license": "CC0"
+ },
+ {
+  "id": "gravelly_sand",
+  "kind": "tex",
+  "res": "1k",
+  "source": "https://polyhaven.com/a/gravelly_sand",
+  "license": "CC0"
+ },
+ {
+  "id": "brown_mud_dry",
+  "kind": "tex",
+  "res": "1k",
+  "source": "https://polyhaven.com/a/brown_mud_dry",
+  "license": "CC0"
+ },
+ {
+  "id": "white_rough_plaster",
+  "kind": "tex",
+  "res": "1k",
+  "source": "https://polyhaven.com/a/white_rough_plaster",
+  "license": "CC0"
+ },
+ {
+  "id": "sandstone_blocks_05",
+  "kind": "tex",
+  "res": "1k",
+  "source": "https://polyhaven.com/a/sandstone_blocks_05",
+  "license": "CC0"
+ },
+ {
+  "id": "palm_bark",
+  "kind": "tex",
+  "res": "1k",
+  "source": "https://polyhaven.com/a/palm_bark",
+  "license": "CC0"
+ },
+ {
+  "id": "reed_roof_04",
+  "kind": "tex",
+  "res": "1k",
+  "source": "https://polyhaven.com/a/reed_roof_04",
+  "license": "CC0"
+ },
+ {
+  "id": "thatch_roof_angled",
+  "kind": "tex",
+  "res": "1k",
+  "source": "https://polyhaven.com/a/thatch_roof_angled",
+  "license": "CC0"
+ },
+ {
+  "id": "rough_wood",
+  "kind": "tex",
+  "res": "1k",
+  "source": "https://polyhaven.com/a/rough_wood",
+  "license": "CC0"
+ },
+ {
+  "id": "jug_01",
+  "kind": "model",
+  "res": "1k",
+  "source": "https://polyhaven.com/a/jug_01",
+  "license": "CC0"
+ },
+ {
+  "id": "wooden_bowl_01",
+  "kind": "model",
+  "res": "1k",
+  "source": "https://polyhaven.com/a/wooden_bowl_01",
+  "license": "CC0"
+ },
+ {
+  "id": "wicker_basket_01",
+  "kind": "model",
+  "res": "1k",
+  "source": "https://polyhaven.com/a/wicker_basket_01",
+  "license": "CC0"
+ },
+ {
+  "id": "wooden_bucket_02",
+  "kind": "model",
+  "res": "1k",
+  "source": "https://polyhaven.com/a/wooden_bucket_02",
+  "license": "CC0"
+ },
+ {
+  "id": "antique_ceramic_vase_01",
+  "kind": "model",
+  "res": "1k",
+  "source": "https://polyhaven.com/a/antique_ceramic_vase_01",
+  "license": "CC0"
+ },
+ {
+  "id": "wooden_lantern_01",
+  "kind": "model",
+  "res": "1k",
+  "source": "https://polyhaven.com/a/wooden_lantern_01",
+  "license": "CC0"
+ },
+ {
+  "id": "wooden_stool_02",
+  "kind": "model",
+  "res": "1k",
+  "source": "https://polyhaven.com/a/wooden_stool_02",
+  "license": "CC0"
+ },
+ {
+  "id": "dry_branches_medium_01",
+  "kind": "model",
+  "res": "1k",
+  "source": "https://polyhaven.com/a/dry_branches_medium_01",
+  "license": "CC0"
+ },
+ {
+  "id": "boulder_01",
+  "kind": "model",
+  "res": "1k",
+  "source": "https://polyhaven.com/a/boulder_01",
+  "license": "CC0"
+ }
+]

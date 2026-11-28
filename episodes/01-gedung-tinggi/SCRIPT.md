@@ -2,7 +2,7 @@
 APPROVED: naskah disetujui pengguna 2026-11-28
 REVIEW: pending   <!-- diganti "reviewed by <nama ustadz>, <tanggal>" setelah pengguna mengonfirmasi -->
 Bahasa: ID (ragam santai, dicek bahasa-inti: KERAS 0, TINJAU 0) · Suara: TTS (ElevenLabs) · Latar suara: senandung vokal/drone, tanpa alat musik · Wiring: A (hybrid)
-Panjang: 210 kata ≈ 65-70 dtk (3,0-3,5 kata/dtk, melambat di kutipan hadits)
+Panjang: 210 kata. VO final = `voice.mp3` (TTS ElevenLabs, suara "Mizani", dipercepat 1,15× atas pilihan pengguna) = 77,8 dtk. Asli 89,4 dtk disimpan sebagai `voice_asli_089s.mp3`. Waktu kata: `words.json`.
 Naskah VO yang dibacakan TTS: `vo.txt` (salawat ditulis lengkap supaya diucapkan).
 
 ## Fakta dan sumber

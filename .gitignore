@@ -8,3 +8,8 @@ out
 
 # derived audio (rebuild from voice.mp3)
 episodes/*/voice.wav
+
+# Poly Haven downloads (rebuild with tools/fetch_ep01_assets.sh)
+public/*/hdri/
+public/*/tex/
+public/*/models/

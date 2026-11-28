@@ -1,3 +1,7 @@
 node_modules
 out
 .DS_Store
+
+# cartoon-3d-short: reference frames are private study material (skill rule: never upload)
+.claude/skills/cartoon-3d-short/references/frames/
+.claude/skills/cartoon-3d-short/references/sheets/
